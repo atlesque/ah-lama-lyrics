@@ -1,5 +1,4 @@
 {
-  // "editor.formatOnSave": true,
   "prettier.bracketSpacing": false,
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#d62828",
