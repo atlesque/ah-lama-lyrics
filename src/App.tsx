@@ -4,10 +4,15 @@ import './styles/metrics.scss';
 import './styles/palette.scss';
 import './styles/shadows.scss';
 import './styles/typography.scss';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import HomePage from './pages/HomePage';
 
 const App = () => (
   <>
-    <p>TODO: Implement App</p>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   </>
 );
 
