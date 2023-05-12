@@ -1,0 +1,25 @@
+{
+  // "editor.formatOnSave": true,
+  "prettier.bracketSpacing": false,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#d62828",
+    "activityBar.background": "#d62828",
+    "activityBar.foreground": "#003049",
+    "activityBar.inactiveForeground": "#eae2b799",
+    "activityBarBadge.background": "#003049",
+    "activityBarBadge.foreground": "#eae2b7",
+    "commandCenter.border": "#eae2b799",
+    "sash.hoverBorder": "#d62828",
+    "statusBar.background": "#003049",
+    "statusBar.foreground": "#eae2b7",
+    "statusBarItem.hoverBackground": "#d62828",
+    "statusBarItem.remoteBackground": "#003049",
+    "statusBarItem.remoteForeground": "#eae2b7",
+    "titleBar.activeBackground": "#003049",
+    "titleBar.activeForeground": "#eae2b7",
+    "titleBar.inactiveBackground": "#00304999",
+    "titleBar.inactiveForeground": "#eae2b799"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
