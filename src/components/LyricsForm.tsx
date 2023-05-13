@@ -1,25 +1,24 @@
-import { FormProvider, useForm } from 'react-hook-form';
-import Input from './shared/Input';
-import Button from './shared/Button';
-import { ObjectSchema, object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ObjectSchema, object, string } from 'yup';
+import Button from './shared/Button';
+import Input from './shared/Input';
 
+import { LyricsLine } from '../types/lyrics';
 import styles from './LyricsForm.module.scss';
-
-interface LyricsValues {
-  tibetan: string;
-  transliteration: string;
-  english: string;
-}
+import { useAtom } from 'jotai';
+import { lyricsLinesAtom } from '../atoms/lyrics';
 
 const LyricsForm = () => {
-  const lyricsSchema: ObjectSchema<LyricsValues> = object({
+  const [lyricsLines, setLyricsLines] = useAtom(lyricsLinesAtom);
+
+  const lyricsSchema: ObjectSchema<LyricsLine> = object({
     tibetan: string().required(),
     transliteration: string().required(),
     english: string().required(),
   });
 
-  const methods = useForm({
+  const methods = useForm<LyricsLine>({
     defaultValues: {
       tibetan: '',
       transliteration: '',
@@ -34,9 +33,8 @@ const LyricsForm = () => {
     formState: { errors },
   } = methods;
 
-  const onSaveLyrics = ({ tibetan, transliteration, english }: LyricsValues): void => {
-    // TODO: Implement
-    console.log({ tibetan, transliteration, english });
+  const onSaveLyrics = ({ tibetan, transliteration, english }: LyricsLine): void => {
+    setLyricsLines([...lyricsLines, { tibetan, transliteration, english }]);
   };
 
   return (

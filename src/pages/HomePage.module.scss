@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: var(--spacing-2);
 }
 
 .pageContainer {
@@ -20,4 +21,10 @@
   width: 100%;
   border: 2px solid var(--color-primary-main);
   box-sizing: border-box;
+}
+
+.lyricsWrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-2);
 }

@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-2);
+  border-radius: var(--border-radius);
+  border: 2px solid var(--color-gray-main);
+}
+
+.lyricsLine {
+  display: flex;
+  flex-direction: column;
+}
