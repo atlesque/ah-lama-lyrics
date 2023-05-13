@@ -8,7 +8,7 @@ import { LyricsLine } from '../types/lyrics';
 import styles from './LyricsForm.module.scss';
 import { useAtom } from 'jotai';
 import { activeLyricsLineAtom, activeLyricsLineIndexAtom, lyricsLinesAtom } from '../atoms/lyrics';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ConfirmButton from './shared/ConfirmButton';
 
 interface LyricsFormProps {
@@ -76,6 +76,10 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
     const updatedLines = [...lyricsLines];
     updatedLines.splice(activeLyricsLineIndex, 1);
     setLyricsLines(updatedLines);
+    if (updatedLines.length <= 0) {
+      setActiveLyricsLineIndex(undefined);
+    }
+    resetForm();
   };
 
   return (
