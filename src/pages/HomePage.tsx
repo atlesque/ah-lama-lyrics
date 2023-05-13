@@ -1,3 +1,4 @@
+import LyricsFileActions from '../components/LyricsFileActions';
 import LyricsForm from '../components/LyricsForm';
 import LyricsLinesList from '../components/LyricsLinesList';
 import styles from './HomePage.module.scss';
@@ -14,7 +15,10 @@ const HomePage = () => (
       </audio>
       <div className={styles.lyricsWrapper}>
         <LyricsForm />
-        <LyricsLinesList />
+        <div className={styles.listWithActions}>
+          <LyricsLinesList />
+          <LyricsFileActions />
+        </div>
       </div>
     </div>
   </div>
