@@ -4,11 +4,11 @@ import classNames from 'classnames/bind';
 
 export type ButtonVariant = 'outlined' | 'contained' | 'text';
 
-export type ButtonColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error';
+export type ButtonColor = 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
 
 const cx = classNames.bind(styles);
 
-interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
+export interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   variant?: ButtonVariant;
   color?: ButtonColor;
   isFullWidth?: boolean;

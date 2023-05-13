@@ -16,16 +16,12 @@
 
   &.lastAdded {
     padding-left: var(--spacing);
+    padding-top: var(--spacing-2);
+    border-top: 2px solid var(--color-gray-main);
+  }
 
-    &::after {
-      content: "";
-      position: absolute;
-      top: calc(50% - calc(var(--spacing)/2) / 2);
-      left: -8px;
-      width: 6px;
-      height: 6px;
-      border-radius: 100%;
-      background-color: var(--color-secondary-light);
-    }
+  &.isActive {
+    border: 2px solid var(--color-secondary-light);
+    padding: var(--spacing);
   }
 }

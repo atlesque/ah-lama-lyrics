@@ -7,7 +7,9 @@ import Input from './shared/Input';
 import { LyricsLine } from '../types/lyrics';
 import styles from './LyricsForm.module.scss';
 import { useAtom } from 'jotai';
-import { lyricsLinesAtom } from '../atoms/lyrics';
+import { activeLyricsLineAtom, activeLyricsLineIndexAtom, lyricsLinesAtom } from '../atoms/lyrics';
+import { useEffect } from 'react';
+import ConfirmButton from './shared/ConfirmButton';
 
 interface LyricsFormProps {
   showTibetan?: boolean;
@@ -15,6 +17,8 @@ interface LyricsFormProps {
 
 const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
   const [lyricsLines, setLyricsLines] = useAtom(lyricsLinesAtom);
+  const [activeLyricsLine] = useAtom(activeLyricsLineAtom);
+  const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(activeLyricsLineIndexAtom);
 
   const lyricsSchema: ObjectSchema<LyricsLine> = object({
     tibetan: string(),
@@ -32,13 +36,45 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
   });
 
   const {
+    formState: { errors },
     handleSubmit,
     register,
-    formState: { errors },
+    setValue,
+    reset: resetForm,
   } = methods;
 
+  useEffect(() => {
+    if (activeLyricsLine === undefined) {
+      return;
+    }
+    setValue('tibetan', activeLyricsLine.tibetan);
+    setValue('transliteration', activeLyricsLine.transliteration);
+    setValue('english', activeLyricsLine.english);
+  }, [activeLyricsLine, setValue]);
+
   const onSaveLyrics = ({ tibetan, transliteration, english }: LyricsLine): void => {
-    setLyricsLines([...lyricsLines, { tibetan, transliteration, english }]);
+    if (activeLyricsLineIndex !== undefined) {
+      const updatedLines = [...lyricsLines];
+      updatedLines[activeLyricsLineIndex] = { tibetan, transliteration, english };
+      setLyricsLines(updatedLines);
+    } else {
+      setLyricsLines([...lyricsLines, { tibetan, transliteration, english }]);
+    }
+    resetForm();
+  };
+
+  const handleCancelClick = (): void => {
+    setActiveLyricsLineIndex(undefined);
+    resetForm();
+  };
+
+  const handleDeleteClick = (): void => {
+    if (activeLyricsLineIndex === undefined) {
+      return;
+    }
+    const updatedLines = [...lyricsLines];
+    updatedLines.splice(activeLyricsLineIndex, 1);
+    setLyricsLines(updatedLines);
   };
 
   return (
@@ -64,9 +100,19 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
           error={errors.english?.message}
           autoComplete="off"
         />
-        <Button type="submit" color="success" isFullWidth>
+        <Button type="submit" color="success">
           Save
         </Button>
+        {activeLyricsLineIndex !== undefined && (
+          <>
+            <Button type="button" color="info" onClick={handleCancelClick}>
+              Cancel
+            </Button>
+            <ConfirmButton type="button" color="error" onClick={handleDeleteClick}>
+              Delete
+            </ConfirmButton>
+          </>
+        )}
       </form>
     </FormProvider>
   );
