@@ -60,6 +60,7 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
     } else {
       setLyricsLines([...lyricsLines, { tibetan, transliteration, english }]);
     }
+    setActiveLyricsLineIndex(undefined);
     resetForm();
   };
 
