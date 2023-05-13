@@ -1,0 +1,72 @@
+.root {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-index-modal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes backgroundFadeIn {
+  0% {
+    background-color: transparent;
+    backdrop-filter: blur(0);
+  }
+  100% {
+    background-color: var(--color-background-main);
+    backdrop-filter: blur(var(--blur-modal));
+  }
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-background-main);
+  backdrop-filter: blur(var(--blur-modal));
+  z-index: 0;
+  animation: backgroundFadeIn 125ms ease-out;
+}
+
+@keyframes modalFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+.modal {
+  background-color: var(--color-background-main);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+  max-width: 320px;
+  padding: var(--spacing-2);
+  z-index: 1;
+  animation: modalFadeIn 200ms ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.title {
+  font-size: var(--font-size-h4);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-2)
+}
+
+.closeIcon {
+  color: var(--color-black-main);
+  width: var(--spacing-2);
+  height: var(--spacing-2);
+}

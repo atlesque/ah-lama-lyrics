@@ -42,10 +42,10 @@ small {
 
 .a {
   font-weight: var(--font-weight-bold);
-  color: var(--primary-main);
+  color: var(--color-primary-main);
   text-decoration: inherit;
 
   &:hover {
-    color: var(--primary-light);
+    color: var(--color-primary-light);
   }
 }

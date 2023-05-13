@@ -13,8 +13,11 @@
   width: 100%;
   padding: var(--spacing-2);
   flex: 1;
+  gap: var(--spacing-4);
 }
 
 .audioPlayer {
   width: 100%;
+  border: 2px solid var(--color-primary-main);
+  box-sizing: border-box;
 }

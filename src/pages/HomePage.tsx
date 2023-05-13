@@ -1,3 +1,4 @@
+import LyricsForm from '../components/LyricsForm';
 import styles from './HomePage.module.scss';
 
 const HomePage = () => (
@@ -10,6 +11,7 @@ const HomePage = () => (
       >
         <a href="/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3">Download audio</a>
       </audio>
+      <LyricsForm />
     </div>
   </div>
 );
