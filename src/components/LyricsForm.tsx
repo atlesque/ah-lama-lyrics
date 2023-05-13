@@ -9,11 +9,15 @@ import styles from './LyricsForm.module.scss';
 import { useAtom } from 'jotai';
 import { lyricsLinesAtom } from '../atoms/lyrics';
 
-const LyricsForm = () => {
+interface LyricsFormProps {
+  showTibetan?: boolean;
+}
+
+const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
   const [lyricsLines, setLyricsLines] = useAtom(lyricsLinesAtom);
 
   const lyricsSchema: ObjectSchema<LyricsLine> = object({
-    tibetan: string().required(),
+    tibetan: string(),
     transliteration: string().required(),
     english: string().required(),
   });
@@ -40,12 +44,14 @@ const LyricsForm = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSaveLyrics)} className={styles.form}>
-        <Input
-          {...register('tibetan')}
-          placeholder="Tibetan"
-          error={errors.tibetan?.message}
-          autoComplete="off"
-        />
+        {showTibetan && (
+          <Input
+            {...register('tibetan')}
+            placeholder="Tibetan"
+            error={errors.tibetan?.message}
+            autoComplete="off"
+          />
+        )}
         <Input
           {...register('transliteration')}
           placeholder="Transliteration"

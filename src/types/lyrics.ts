@@ -1,5 +1,5 @@
 export interface LyricsLine {
-  tibetan: string;
+  tibetan?: string;
   transliteration: string;
   english: string;
 }

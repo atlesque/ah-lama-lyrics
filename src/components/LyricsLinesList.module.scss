@@ -4,9 +4,28 @@
   padding: var(--spacing-2);
   border-radius: var(--border-radius);
   border: 2px solid var(--color-gray-main);
+  gap: var(--spacing-2);
+  height: 500px;
+  overflow-y: auto;
 }
 
 .lyricsLine {
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  &.lastAdded {
+    padding-left: var(--spacing);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: calc(50% - calc(var(--spacing)/2) / 2);
+      left: -8px;
+      width: 6px;
+      height: 6px;
+      border-radius: 100%;
+      background-color: var(--color-secondary-light);
+    }
+  }
 }
