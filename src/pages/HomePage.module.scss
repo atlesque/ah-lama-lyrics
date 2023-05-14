@@ -17,12 +17,6 @@
   gap: var(--spacing-4);
 }
 
-.audioPlayer {
-  width: 100%;
-  border: 2px solid var(--color-primary-main);
-  box-sizing: border-box;
-}
-
 .lyricsWrapper {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
