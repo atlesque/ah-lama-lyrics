@@ -11,6 +11,7 @@ import { LyricsLine } from '../types/lyrics';
 import styles from './LyricsForm.module.scss';
 import ConfirmButton from './shared/ConfirmButton';
 import { currentTimeAtom } from '../atoms/audio';
+import Text from './shared/Text';
 
 interface LyricsFormProps {
   showTibetan?: boolean;
@@ -22,10 +23,23 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
   const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(activeLyricsLineIndexAtom);
   const [currentTime] = useAtom(currentTimeAtom);
 
-  // TODO: Add start/end validation
   const lyricsSchema: ObjectSchema<LyricsLine> = object({
-    startTime: number().required().min(0),
-    endTime: number().required().min(0),
+    startTime: number()
+      .required()
+      .min(0)
+      .test(
+        'lessThanEndTime',
+        'Start must be before end',
+        (item, ctx) => item < ctx.parent.endTime
+      ),
+    endTime: number()
+      .required()
+      .min(0)
+      .test(
+        'moreThanStartTime',
+        'End must be after start',
+        (item, ctx) => item > ctx.parent.startTime
+      ),
     tibetan: string(),
     transliteration: string(),
     english: string(),
@@ -110,41 +124,45 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSaveLyrics)} className={styles.form}>
         <fieldset className={styles.inputGroup}>
-          <div className={styles.timeInputGroup}>
-            <Input
-              {...register('startTime')}
-              type="number"
-              step={0.01}
-              min={0}
-              placeholder="Start"
-              error={errors.startTime?.message}
-              autoComplete="off"
-            />
-            <Button
-              type="button"
-              className={styles.setTimeButton}
-              onClick={() => handleSetTimeClick('startTime')}
-            >
-              Set
-            </Button>
+          <div>
+            <div className={styles.timeInputGroup}>
+              <Input
+                {...register('startTime')}
+                type="number"
+                step={0.01}
+                min={0}
+                placeholder="Start"
+                autoComplete="off"
+              />
+              <Button
+                type="button"
+                className={styles.setTimeButton}
+                onClick={() => handleSetTimeClick('startTime')}
+              >
+                Set
+              </Button>
+            </div>
+            {errors.startTime?.message && <Text color="error">{errors.startTime?.message}</Text>}
           </div>
-          <div className={styles.timeInputGroup}>
-            <Input
-              {...register('endTime')}
-              type="number"
-              step={0.01}
-              min={0}
-              placeholder="End"
-              error={errors.endTime?.message}
-              autoComplete="off"
-            />
-            <Button
-              type="button"
-              className={styles.setTimeButton}
-              onClick={() => handleSetTimeClick('endTime')}
-            >
-              Set
-            </Button>
+          <div>
+            <div className={styles.timeInputGroup}>
+              <Input
+                {...register('endTime')}
+                type="number"
+                step={0.01}
+                min={0}
+                placeholder="End"
+                autoComplete="off"
+              />
+              <Button
+                type="button"
+                className={styles.setTimeButton}
+                onClick={() => handleSetTimeClick('endTime')}
+              >
+                Set
+              </Button>
+            </div>
+            {errors.endTime?.message && <Text color="error">{errors.endTime?.message}</Text>}
           </div>
         </fieldset>
         {showTibetan && (
