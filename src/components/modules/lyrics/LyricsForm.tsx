@@ -16,16 +16,14 @@ import ConfirmButton from '../../shared/ConfirmButton';
 import Input from '../../shared/Input';
 import Text from '../../shared/Text';
 import styles from './LyricsForm.module.scss';
+import { settingsAtom } from '../../../atoms/settings';
 
-interface LyricsFormProps {
-  showTibetan?: boolean;
-}
-
-const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
+const LyricsForm = () => {
   const [lyricsLines, setLyricsLines] = useAtom(lyricsLinesAtom);
   const [activeLyricsLine] = useAtom(selectedLyricsLineAtom);
   const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(selectedLyricsLineIndexAtom);
   const [currentTime] = useAtom(currentTimeAtom);
+  const [settings] = useAtom(settingsAtom);
 
   const lyricsSchema: ObjectSchema<LyricsLine> = object({
     startTime: number()
@@ -169,7 +167,7 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
             {errors.endTime?.message && <Text color="error">{errors.endTime?.message}</Text>}
           </div>
         </fieldset>
-        {showTibetan && (
+        {settings.showTibetan && (
           <Input
             {...register('tibetan')}
             placeholder="Tibetan"

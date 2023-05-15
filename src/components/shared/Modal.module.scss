@@ -16,7 +16,7 @@
     backdrop-filter: blur(0);
   }
   100% {
-    background-color: var(--color-background-main);
+    background-color: var(--color-background-modal);
     backdrop-filter: blur(var(--blur-modal));
   }
 }
@@ -27,7 +27,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: var(--color-background-main);
+  background-color: var(--color-background-modal);
   backdrop-filter: blur(var(--blur-modal));
   z-index: 0;
   animation: backgroundFadeIn 125ms ease-out;

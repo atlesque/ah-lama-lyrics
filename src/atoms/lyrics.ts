@@ -24,11 +24,17 @@ export const selectedLyricsLineAtom = atom<LyricsLine | undefined>(get => {
   return activeLineIndex !== undefined ? lyricsLines[activeLineIndex] : undefined;
 });
 
-export const currentLyricsLineAtom = atom<LyricsLine | undefined>(get => {
+export const currentLyricsLineIndexAtom = atom<number | undefined>(get => {
   const lyricsLines = get(lyricsLinesAtom);
   const currentTime = get(currentTimeAtom);
-  const currentLineCandidates = lyricsLines.filter(
+  const currentLineIndex = lyricsLines.findIndex(
     line => line.startTime <= currentTime && line.endTime > currentTime
   );
-  return currentLineCandidates.length > 0 ? currentLineCandidates[0] : undefined;
+  return currentLineIndex;
+});
+
+export const currentLyricsLineAtom = atom<LyricsLine | undefined>(get => {
+  const lyricsLines = get(lyricsLinesAtom);
+  const currentLineIndex = get(currentLyricsLineIndexAtom);
+  return currentLineIndex !== undefined ? lyricsLines[currentLineIndex] : undefined;
 });

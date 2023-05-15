@@ -2,22 +2,29 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 
-import styles from './LyricsLinesList.module.scss';
 import { lastSetTimeAtom } from '../../../atoms/audio';
-import { lyricsLinesAtom, selectedLyricsLineIndexAtom } from '../../../atoms/lyrics';
+import {
+  currentLyricsLineIndexAtom,
+  lyricsLinesAtom,
+  selectedLyricsLineIndexAtom,
+} from '../../../atoms/lyrics';
 import { getSecondsAsTimecode } from '../../../helpers/getSecondsAsTimecode';
-import { LyricsLine } from '../../../types/lyrics';
-import Button from '../../shared/Button';
 import CloseIcon from '../../../icons/CloseIcon';
 import EditIcon from '../../../icons/EditIcon';
+import { LyricsLine } from '../../../types/lyrics';
+import Button from '../../shared/Button';
+import styles from './LyricsLinesList.module.scss';
+import { settingsAtom } from '../../../atoms/settings';
 
 const LyricsLinesList = () => {
   const [lyricsLines] = useAtom(lyricsLinesAtom);
   const [lastLyricsLinesState, setLastLyricsLinesState] = useState<LyricsLine[]>(lyricsLines);
   const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(selectedLyricsLineIndexAtom);
   const [, setLastSetTime] = useAtom(lastSetTimeAtom);
+  const [currentLineIndex] = useAtom(currentLyricsLineIndexAtom);
+  const [settings] = useAtom(settingsAtom);
 
-  const rootRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (rootRef.current && lyricsLines.length > lastLyricsLinesState.length) {
@@ -34,10 +41,17 @@ const LyricsLinesList = () => {
     setActiveLyricsLineIndex(activeLyricsLineIndex === lineIndex ? undefined : lineIndex);
   };
 
+  useEffect(() => {
+    if (settings.autoFollowLyricsList && rootRef.current && currentLineIndex !== undefined) {
+      const currentLineElement = rootRef.current.querySelectorAll('li')[currentLineIndex];
+      currentLineElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentLineIndex, settings.autoFollowLyricsList]);
+
   return (
-    <div className={styles.root} ref={rootRef}>
+    <ul className={styles.root} ref={rootRef}>
       {lyricsLines.map((line, index) => (
-        <div key={`lyricsLine-${index}`} className={styles.lyricsLine}>
+        <li key={`lyricsLine-${index}`} className={styles.lyricsLine}>
           <button
             className={clsx(styles.lyricsLineText, {
               [styles.isActive]: index === activeLyricsLineIndex,
@@ -56,9 +70,9 @@ const LyricsLinesList = () => {
               {index === activeLyricsLineIndex ? <CloseIcon width={16} /> : <EditIcon width={16} />}
             </Button>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   );
 };
 

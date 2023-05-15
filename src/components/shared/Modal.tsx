@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
-import CloseIcon from '../icons/CloseIcon';
 import styles from './Modal.module.scss';
+import CloseIcon from '../../icons/CloseIcon';
 
 interface ModalClasses {
   root?: string;
@@ -11,7 +11,7 @@ interface ModalClasses {
   content?: string;
 }
 
-interface ModalProps extends React.ComponentPropsWithRef<'div'> {
+export interface ModalProps extends React.ComponentPropsWithRef<'div'> {
   title?: string;
   showCloseButton?: boolean;
   closeOnBackdropClick?: boolean;

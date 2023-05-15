@@ -17,6 +17,7 @@
   gap: var(--spacing);
   position: relative;
   font-weight: var(--font-weight-normal);
+  list-style: none;
 
   &:not(:last-of-type) {
     border-bottom: 2px solid var(--color-info-light);
