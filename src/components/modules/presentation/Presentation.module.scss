@@ -1,0 +1,58 @@
+.root {
+  background-color: var(--color-primary-main);
+  aspect-ratio: 16 / 9;
+  padding: var(--spacing-2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.decoration {
+  background-image: url('/src/assets/images/ah-symbol-padded-2.png');
+  background-repeat: space;
+  background-size: contain;
+}
+
+.horizontalDecoration {
+  @extend .decoration;
+  height: 20px;
+}
+
+.verticalDecoration {
+  @extend .decoration;
+  width: 22px;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing);
+  flex: 1;
+  text-align: center;
+  padding: var(--spacing-4);
+  zoom: 1.5; // HACK: To scale all the text
+}
+
+.textTibetan {
+  color: var(--color-secondary-main);
+  font-size: calc(var(--font-size-h2)*2);
+}
+
+.textTransliteration {
+  color: var(--color-primary-contrast);
+  font-size: var(--font-size-h1);
+}
+
+.textEnglish {
+  color: var(--color-gray-main);
+  font-size: var(--font-size-h2);
+}

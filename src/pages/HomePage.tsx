@@ -2,11 +2,13 @@ import AudioPlayer from '../components/modules/audio/AudioPlayer';
 import LyricsFileActions from '../components/modules/lyrics/LyricsFileActions';
 import LyricsForm from '../components/modules/lyrics/LyricsForm';
 import LyricsLinesList from '../components/modules/lyrics/LyricsLinesList';
+import Presentation from '../components/modules/presentation/Presentation';
 import styles from './HomePage.module.scss';
 
 const HomePage = () => (
   <div className={styles.root}>
     <div className={styles.pageContainer}>
+      <Presentation />
       <AudioPlayer />
       <div className={styles.lyricsWrapper}>
         <LyricsForm />

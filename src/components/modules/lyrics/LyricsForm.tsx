@@ -6,8 +6,8 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { currentTimeAtom } from '../../../atoms/audio';
 import {
-  activeLyricsLineAtom,
-  activeLyricsLineIndexAtom,
+  selectedLyricsLineAtom,
+  selectedLyricsLineIndexAtom,
   lyricsLinesAtom,
 } from '../../../atoms/lyrics';
 import { LyricsLine } from '../../../types/lyrics';
@@ -23,8 +23,8 @@ interface LyricsFormProps {
 
 const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
   const [lyricsLines, setLyricsLines] = useAtom(lyricsLinesAtom);
-  const [activeLyricsLine] = useAtom(activeLyricsLineAtom);
-  const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(activeLyricsLineIndexAtom);
+  const [activeLyricsLine] = useAtom(selectedLyricsLineAtom);
+  const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(selectedLyricsLineIndexAtom);
   const [currentTime] = useAtom(currentTimeAtom);
 
   const lyricsSchema: ObjectSchema<LyricsLine> = object({

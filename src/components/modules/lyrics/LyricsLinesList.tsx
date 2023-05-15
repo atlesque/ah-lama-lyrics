@@ -1,26 +1,30 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styles from './LyricsLinesList.module.scss';
 import { lastSetTimeAtom } from '../../../atoms/audio';
-import { lyricsLinesAtom, activeLyricsLineIndexAtom } from '../../../atoms/lyrics';
+import { lyricsLinesAtom, selectedLyricsLineIndexAtom } from '../../../atoms/lyrics';
 import { getSecondsAsTimecode } from '../../../helpers/getSecondsAsTimecode';
 import { LyricsLine } from '../../../types/lyrics';
 import Button from '../../shared/Button';
+import CloseIcon from '../../../icons/CloseIcon';
+import EditIcon from '../../../icons/EditIcon';
 
 const LyricsLinesList = () => {
   const [lyricsLines] = useAtom(lyricsLinesAtom);
-  const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(activeLyricsLineIndexAtom);
+  const [lastLyricsLinesState, setLastLyricsLinesState] = useState<LyricsLine[]>(lyricsLines);
+  const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(selectedLyricsLineIndexAtom);
   const [, setLastSetTime] = useAtom(lastSetTimeAtom);
 
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (rootRef.current) {
+    if (rootRef.current && lyricsLines.length > lastLyricsLinesState.length) {
       rootRef.current.scrollTo(0, rootRef.current.scrollHeight);
+      setLastLyricsLinesState(lyricsLines);
     }
-  }, [lyricsLines]);
+  }, [lastLyricsLinesState.length, lyricsLines]);
 
   const handleLineClick = (line: LyricsLine): void => {
     setLastSetTime(line.startTime);
@@ -47,9 +51,9 @@ const LyricsLinesList = () => {
             <span>{line.transliteration}</span>
             <span>{line.english}</span>
           </button>
-          <div className={styles.lyricsLineActions}>
-            <Button onClick={() => handleEditClick(index)}>
-              {index === activeLyricsLineIndex ? 'Cancel' : 'Edit'}
+          <div>
+            <Button className={styles.actionButton} onClick={() => handleEditClick(index)}>
+              {index === activeLyricsLineIndex ? <CloseIcon width={16} /> : <EditIcon width={16} />}
             </Button>
           </div>
         </div>
