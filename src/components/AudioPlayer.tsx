@@ -3,21 +3,34 @@ import styles from './AudioPlayer.module.scss';
 
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { currentTimeAtom } from '../atoms/audio';
+import { currentTimeAtom, lastSetTimeAtom } from '../atoms/audio';
 import { activeLyricsLineAtom } from '../atoms/lyrics';
 
 const AudioPlayer = () => {
   const [currentTime, setCurrentTime] = useAtom(currentTimeAtom);
   const [activeLyricsLine] = useAtom(activeLyricsLineAtom);
+  const [lastSetTime, setLastSetTime] = useAtom(lastSetTimeAtom);
   const [isInitialized, setIsInitialized] = useState(false);
   const audioPlayerRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (activeLyricsLine && isInitialized && audioPlayerRef.current) {
       audioPlayerRef.current.currentTime = activeLyricsLine.startTime;
       setCurrentTime(activeLyricsLine.startTime);
     }
-  }, [activeLyricsLine, isInitialized, setCurrentTime]);
+  }, [activeLyricsLine, isInitialized, setCurrentTime]); */
+
+  useEffect(() => {
+    if (
+      lastSetTime &&
+      isInitialized &&
+      audioPlayerRef.current &&
+      lastSetTime !== audioPlayerRef.current.currentTime
+    ) {
+      audioPlayerRef.current.currentTime = lastSetTime;
+      setLastSetTime(undefined);
+    }
+  }, [currentTime, isInitialized, lastSetTime, setLastSetTime]);
 
   const handleCanPlay = () => {
     if (!isInitialized && audioPlayerRef.current) {
@@ -28,7 +41,7 @@ const AudioPlayer = () => {
 
   const handleTimeUpdate = debounce(() => {
     if (audioPlayerRef.current) {
-      setCurrentTime(audioPlayerRef.current.currentTime);
+      setCurrentTime(parseFloat(audioPlayerRef.current.currentTime.toFixed(2)));
     }
   }, 200);
 

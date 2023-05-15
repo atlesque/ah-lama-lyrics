@@ -27,8 +27,8 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
     startTime: number().required().min(0),
     endTime: number().required().min(0),
     tibetan: string(),
-    transliteration: string().required(),
-    english: string().required(),
+    transliteration: string(),
+    english: string(),
   });
 
   const methods = useForm<LyricsLine>({
@@ -52,18 +52,28 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
 
   useEffect(() => {
     if (activeLyricsLine === undefined) {
-      return;
+      return resetForm();
     }
     setValue('startTime', activeLyricsLine.startTime);
     setValue('endTime', activeLyricsLine.endTime);
     setValue('tibetan', activeLyricsLine.tibetan);
     setValue('transliteration', activeLyricsLine.transliteration);
     setValue('english', activeLyricsLine.english);
-  }, [activeLyricsLine, setValue]);
+  }, [activeLyricsLine, resetForm, setValue]);
 
   const onSaveLyrics = (updatedLine: LyricsLine): void => {
     const updatedLines = [...lyricsLines];
-    if (activeLyricsLineIndex !== undefined) {
+    if (activeLyricsLineIndex === undefined) {
+      const newLine = { ...updatedLine };
+      if (newLine.startTime <= 0) {
+        newLine.startTime = currentTime;
+      }
+      const prevLine = updatedLines.pop();
+      if (prevLine && prevLine.endTime === 0) {
+        prevLine.endTime = newLine.startTime;
+      }
+      setLyricsLines([...updatedLines, ...(prevLine ? [prevLine] : []), newLine]);
+    } else {
       const prevLine = lyricsLines[activeLyricsLineIndex - 1];
       if (prevLine && prevLine.endTime === lyricsLines[activeLyricsLineIndex].startTime) {
         prevLine.endTime = updatedLine.startTime;
@@ -71,12 +81,6 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
       }
       updatedLines[activeLyricsLineIndex] = updatedLine;
       setLyricsLines(updatedLines);
-    } else {
-      const prevLine = updatedLines.pop();
-      if (prevLine && prevLine.endTime === 0) {
-        prevLine.endTime = updatedLine.startTime;
-      }
-      setLyricsLines([...updatedLines, ...(prevLine ? [prevLine] : []), updatedLine]);
     }
     setActiveLyricsLineIndex(undefined);
     resetForm();
@@ -94,9 +98,7 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
     const updatedLines = [...lyricsLines];
     updatedLines.splice(activeLyricsLineIndex, 1);
     setLyricsLines(updatedLines);
-    if (updatedLines.length <= 0) {
-      setActiveLyricsLineIndex(undefined);
-    }
+    setActiveLyricsLineIndex(undefined);
     resetForm();
   };
 
@@ -112,7 +114,8 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
             <Input
               {...register('startTime')}
               type="number"
-              step={0.000001}
+              step={0.01}
+              min={0}
               placeholder="Start"
               error={errors.startTime?.message}
               autoComplete="off"
@@ -129,7 +132,8 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
             <Input
               {...register('endTime')}
               type="number"
-              step={0.000001}
+              step={0.01}
+              min={0}
               placeholder="End"
               error={errors.endTime?.message}
               autoComplete="off"

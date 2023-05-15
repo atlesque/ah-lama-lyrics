@@ -11,18 +11,36 @@
 
 .lyricsLine {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing);
   position: relative;
   font-weight: var(--font-weight-normal);
 
-  &.lastAdded:not(:first-child) {
-    padding-left: var(--spacing);
-    padding-top: var(--spacing-2);
-    border-top: 2px solid var(--color-gray-main);
+  &:not(:last-of-type) {
+    border-bottom: 2px solid var(--color-info-light);
+    padding-bottom: var(--spacing-2);
   }
+}
+
+.lyricsLineText {
+  display: flex;
+  flex-direction: column;
+  font-weight: var(--font-weight-normal);
+  text-align: left;
 
   &.isActive {
-    border: 2px solid var(--color-secondary-light);
-    padding: var(--spacing);
+    border-left: 2px solid var(--color-secondary-light);
+    padding-left: var(--spacing);
+    padding-right: var(--spacing);
   }
+}
+
+.lyricsTimecode {
+  color: var(--color-secondary-dark);
+  font-size: var(--font-size-small);
+}
+
+.lyricsLineActions {
 }

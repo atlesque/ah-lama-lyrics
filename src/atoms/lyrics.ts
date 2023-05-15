@@ -1,8 +1,16 @@
 import { atomWithStorage } from 'jotai/utils';
 import { LyricsLine } from '../types/lyrics';
 import { atom } from 'jotai';
+import { sortBy } from 'lodash';
 
-export const lyricsLinesAtom = atomWithStorage<LyricsLine[]>('lyricsLines', []);
+const lyricsLinesAtomLocalStorage = atomWithStorage<LyricsLine[]>('lyricsLines', []);
+
+export const lyricsLinesAtom = atom(
+  get => get(lyricsLinesAtomLocalStorage),
+  (_get, set, newLyricsLines: LyricsLine[]) => {
+    set(lyricsLinesAtomLocalStorage, sortBy(newLyricsLines, [line => line.startTime]));
+  }
+);
 
 export const activeLyricsLineIndexAtom = atomWithStorage<number | undefined>(
   'activeLyricsLineIndex',
