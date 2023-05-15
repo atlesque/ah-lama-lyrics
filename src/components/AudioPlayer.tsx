@@ -2,13 +2,22 @@ import { useAtom } from 'jotai';
 import styles from './AudioPlayer.module.scss';
 
 import { debounce } from 'lodash';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { currentTimeAtom } from '../atoms/audio';
+import { activeLyricsLineAtom } from '../atoms/lyrics';
 
 const AudioPlayer = () => {
   const [currentTime, setCurrentTime] = useAtom(currentTimeAtom);
+  const [activeLyricsLine] = useAtom(activeLyricsLineAtom);
   const [isInitialized, setIsInitialized] = useState(false);
   const audioPlayerRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (activeLyricsLine && isInitialized && audioPlayerRef.current) {
+      audioPlayerRef.current.currentTime = activeLyricsLine.startTime;
+      setCurrentTime(activeLyricsLine.startTime);
+    }
+  }, [activeLyricsLine, isInitialized, setCurrentTime]);
 
   const handleCanPlay = () => {
     if (!isInitialized && audioPlayerRef.current) {

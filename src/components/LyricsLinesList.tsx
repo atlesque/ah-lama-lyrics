@@ -1,8 +1,9 @@
-import { useAtom } from 'jotai';
-import styles from './LyricsLinesList.module.scss';
-import { activeLyricsLineIndexAtom, lyricsLinesAtom } from '../atoms/lyrics';
-import { useEffect, useRef } from 'react';
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
+import { useEffect, useRef } from 'react';
+import { activeLyricsLineIndexAtom, lyricsLinesAtom } from '../atoms/lyrics';
+import { LyricsLine } from '../types/lyrics';
+import styles from './LyricsLinesList.module.scss';
 
 const LyricsLinesList = () => {
   const [lyricsLines] = useAtom(lyricsLinesAtom);
@@ -16,7 +17,7 @@ const LyricsLinesList = () => {
     }
   }, [lyricsLines]);
 
-  const handleLineClick = (lineIndex: number): void => {
+  const handleLineClick = (lineIndex: number, line: LyricsLine): void => {
     setActiveLyricsLineIndex(activeLyricsLineIndex === lineIndex ? undefined : lineIndex);
   };
 
@@ -29,8 +30,13 @@ const LyricsLinesList = () => {
             [styles.lastAdded]: index === lyricsLines.length - 1,
             [styles.isActive]: index === activeLyricsLineIndex,
           })}
-          onClick={() => handleLineClick(index)}
+          onClick={() => handleLineClick(index, line)}
         >
+          <div>
+            <span>
+              {line.startTime} - {line.endTime}
+            </span>
+          </div>
           <span>{line.tibetan}</span>
           <span>{line.transliteration}</span>
           <span>{line.english}</span>

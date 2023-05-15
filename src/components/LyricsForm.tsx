@@ -62,12 +62,21 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
   }, [activeLyricsLine, setValue]);
 
   const onSaveLyrics = (updatedLine: LyricsLine): void => {
+    const updatedLines = [...lyricsLines];
     if (activeLyricsLineIndex !== undefined) {
-      const updatedLines = [...lyricsLines];
+      const prevLine = lyricsLines[activeLyricsLineIndex - 1];
+      if (prevLine && prevLine.endTime === lyricsLines[activeLyricsLineIndex].startTime) {
+        prevLine.endTime = updatedLine.startTime;
+        updatedLines[activeLyricsLineIndex - 1] = prevLine;
+      }
       updatedLines[activeLyricsLineIndex] = updatedLine;
       setLyricsLines(updatedLines);
     } else {
-      setLyricsLines([...lyricsLines, updatedLine]);
+      const prevLine = updatedLines.pop();
+      if (prevLine && prevLine.endTime === 0) {
+        prevLine.endTime = updatedLine.startTime;
+      }
+      setLyricsLines([...updatedLines, ...(prevLine ? [prevLine] : []), updatedLine]);
     }
     setActiveLyricsLineIndex(undefined);
     resetForm();
@@ -103,7 +112,7 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
             <Input
               {...register('startTime')}
               type="number"
-              step={0.01}
+              step={0.000001}
               placeholder="Start"
               error={errors.startTime?.message}
               autoComplete="off"
@@ -120,7 +129,7 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
             <Input
               {...register('endTime')}
               type="number"
-              step={0.01}
+              step={0.000001}
               placeholder="End"
               error={errors.endTime?.message}
               autoComplete="off"
@@ -155,7 +164,7 @@ const LyricsForm = ({ showTibetan = false }: LyricsFormProps) => {
           autoComplete="off"
         />
         <Button type="submit" color="success">
-          Save
+          {activeLyricsLineIndex !== undefined ? 'Save' : 'Add new'}
         </Button>
         {activeLyricsLineIndex !== undefined && (
           <>
