@@ -1,10 +1,11 @@
 import { useAtom } from 'jotai';
 import { useRef, useState } from 'react';
-import { lyricsLinesAtom } from '../atoms/lyrics';
-import { LyricsLine } from '../types/lyrics';
+
 import styles from './LyricsFileActions.module.scss';
-import Button from './shared/Button';
-import Text from './shared/Text';
+import { lyricsLinesAtom } from '../../../atoms/lyrics';
+import { LyricsLine } from '../../../types/lyrics';
+import Button from '../../shared/Button';
+import Text from '../../shared/Text';
 
 const LyricsFileActions = () => {
   const [lyricsLines, setLyricsLines] = useAtom(lyricsLinesAtom);

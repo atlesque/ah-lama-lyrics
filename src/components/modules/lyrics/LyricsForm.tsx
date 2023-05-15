@@ -1,17 +1,21 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { ObjectSchema, number, object, string } from 'yup';
-import Button from './shared/Button';
-import Input from './shared/Input';
 
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { activeLyricsLineAtom, activeLyricsLineIndexAtom, lyricsLinesAtom } from '../atoms/lyrics';
-import { LyricsLine } from '../types/lyrics';
+import { currentTimeAtom } from '../../../atoms/audio';
+import {
+  activeLyricsLineAtom,
+  activeLyricsLineIndexAtom,
+  lyricsLinesAtom,
+} from '../../../atoms/lyrics';
+import { LyricsLine } from '../../../types/lyrics';
+import Button from '../../shared/Button';
+import ConfirmButton from '../../shared/ConfirmButton';
+import Input from '../../shared/Input';
+import Text from '../../shared/Text';
 import styles from './LyricsForm.module.scss';
-import ConfirmButton from './shared/ConfirmButton';
-import { currentTimeAtom } from '../atoms/audio';
-import Text from './shared/Text';
 
 interface LyricsFormProps {
   showTibetan?: boolean;

@@ -1,12 +1,13 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useEffect, useRef } from 'react';
-import { activeLyricsLineIndexAtom, lyricsLinesAtom } from '../atoms/lyrics';
-import { LyricsLine } from '../types/lyrics';
+
 import styles from './LyricsLinesList.module.scss';
-import { getSecondsAsTimecode } from '../helpers/getSecondsAsTimecode';
-import Button from './shared/Button';
-import { currentTimeAtom, lastSetTimeAtom } from '../atoms/audio';
+import { lastSetTimeAtom } from '../../../atoms/audio';
+import { lyricsLinesAtom, activeLyricsLineIndexAtom } from '../../../atoms/lyrics';
+import { getSecondsAsTimecode } from '../../../helpers/getSecondsAsTimecode';
+import { LyricsLine } from '../../../types/lyrics';
+import Button from '../../shared/Button';
 
 const LyricsLinesList = () => {
   const [lyricsLines] = useAtom(lyricsLinesAtom);

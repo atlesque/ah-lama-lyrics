@@ -1,7 +1,7 @@
-import AudioPlayer from '../components/AudioPlayer';
-import LyricsFileActions from '../components/LyricsFileActions';
-import LyricsForm from '../components/LyricsForm';
-import LyricsLinesList from '../components/LyricsLinesList';
+import AudioPlayer from '../components/modules/audio/AudioPlayer';
+import LyricsFileActions from '../components/modules/lyrics/LyricsFileActions';
+import LyricsForm from '../components/modules/lyrics/LyricsForm';
+import LyricsLinesList from '../components/modules/lyrics/LyricsLinesList';
 import styles from './HomePage.module.scss';
 
 const HomePage = () => (

@@ -3,22 +3,13 @@ import styles from './AudioPlayer.module.scss';
 
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { currentTimeAtom, lastSetTimeAtom } from '../atoms/audio';
-import { activeLyricsLineAtom } from '../atoms/lyrics';
+import { currentTimeAtom, lastSetTimeAtom } from '../../../atoms/audio';
 
 const AudioPlayer = () => {
   const [currentTime, setCurrentTime] = useAtom(currentTimeAtom);
-  const [activeLyricsLine] = useAtom(activeLyricsLineAtom);
   const [lastSetTime, setLastSetTime] = useAtom(lastSetTimeAtom);
   const [isInitialized, setIsInitialized] = useState(false);
   const audioPlayerRef = useRef<HTMLAudioElement>(null);
-
-  /* useEffect(() => {
-    if (activeLyricsLine && isInitialized && audioPlayerRef.current) {
-      audioPlayerRef.current.currentTime = activeLyricsLine.startTime;
-      setCurrentTime(activeLyricsLine.startTime);
-    }
-  }, [activeLyricsLine, isInitialized, setCurrentTime]); */
 
   useEffect(() => {
     if (
