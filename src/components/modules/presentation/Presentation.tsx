@@ -5,23 +5,28 @@ import { settingsAtom } from '../../../atoms/settings';
 import { LyricsLine } from '../../../types/lyrics';
 import Button from '../../shared/Button';
 import styles from './Presentation.module.scss';
-import { audioPlayerHasEndedAtom, audioPlayerRefAtom } from '../../../atoms/audioPlayer';
+import {
+  audioPlayerHasEndedAtom,
+  audioPlayerRefAtom,
+  currentTimeAtom,
+} from '../../../atoms/audioPlayer';
 
 const INTRO_TIME = 8000;
 const OUTRO_TIME = 8000;
 
-const INTRO_TEXT: LyricsLine = {
-  startTime: 0,
-  endTime: 5,
-  transliteration: 'Guru Yoga That Brings Swift Realisations',
-  english: 'His Holiness the Great Siddha Lungdok Gyaltsen Rinpoche',
+interface TitleLine {
+  title: string;
+  subtitle?: string;
+}
+
+const INTRO_TEXT: TitleLine = {
+  title: 'Guru Yoga That Brings Swift Realisations',
+  subtitle: 'His Holiness the Great Siddha Lungdok Gyaltsen Rinpoche',
 };
 
-const OUTRO_TEXT: LyricsLine = {
-  startTime: 0,
-  endTime: 5,
-  transliteration: 'Guru Yoga That Brings Swift Realisations',
-  english: 'His Holiness the Great Siddha Lungdok Gyaltsen Rinpoche',
+const OUTRO_TEXT: TitleLine = {
+  title: 'Guru Yoga That Brings Swift Realisations',
+  subtitle: 'His Holiness the Great Siddha Lungdok Gyaltsen Rinpoche',
 };
 
 interface PresentationProps {
@@ -30,6 +35,7 @@ interface PresentationProps {
 }
 
 const Presentation = ({ onPlay, onStop }: PresentationProps) => {
+  const [, setCurrentTime] = useAtom(currentTimeAtom);
   const [currentLine] = useAtom(currentLyricsLineAtom);
   const [settings] = useAtom(settingsAtom);
   const [audioPlayer] = useAtom(audioPlayerRefAtom);
@@ -71,15 +77,15 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
     audioPlayer.currentTime = 0;
   };
 
-  const displayedLine = useMemo(() => {
+  const titleScreen: TitleLine | undefined = useMemo(() => {
     if (isPlayingIntro) {
       return INTRO_TEXT;
     }
     if (isPlayingOutro) {
       return OUTRO_TEXT;
     }
-    return currentLine;
-  }, [currentLine, isPlayingIntro, isPlayingOutro]);
+    return undefined;
+  }, [isPlayingIntro, isPlayingOutro]);
 
   useEffect(() => {
     if (audioPlayerHasEnded) {
@@ -106,11 +112,21 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
         <div className={styles.contentWrapper}>
           <div className={styles.verticalDecoration}></div>
           <div className={styles.content} style={{ zoom: settings.presentationZoomLevel }}>
-            {settings.showTibetan && (
-              <span className={styles.textTibetan}>{displayedLine?.tibetan}</span>
+            {titleScreen && (
+              <>
+                <span className={styles.textTitle}>{titleScreen?.title}</span>
+                <span className={styles.textSubtitle}>{titleScreen?.subtitle}</span>
+              </>
             )}
-            <span className={styles.textTransliteration}>{displayedLine?.transliteration}</span>
-            <span className={styles.textEnglish}>{displayedLine?.english}</span>
+            {!titleScreen && currentLine && (
+              <>
+                {settings.showTibetan && (
+                  <span className={styles.textTibetan}>{currentLine?.tibetan}</span>
+                )}
+                <span className={styles.textTransliteration}>{currentLine?.transliteration}</span>
+                <span className={styles.textEnglish}>{currentLine?.english}</span>
+              </>
+            )}
           </div>
           <div className={styles.verticalDecoration}></div>
         </div>
