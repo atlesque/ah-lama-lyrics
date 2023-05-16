@@ -3,42 +3,49 @@ import styles from './AudioPlayer.module.scss';
 
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { currentTimeAtom, lastSetTimeAtom } from '../../../atoms/audio';
+import { audioPlayerRefAtom, currentTimeAtom, lastSetTimeAtom } from '../../../atoms/audioPlayer';
 
 const AudioPlayer = () => {
   const [currentTime, setCurrentTime] = useAtom(currentTimeAtom);
   const [lastSetTime, setLastSetTime] = useAtom(lastSetTimeAtom);
+  const [audioPlayerRef, setAudioPlayerRef] = useAtom(audioPlayerRefAtom);
   const [isInitialized, setIsInitialized] = useState(false);
-  const audioPlayerRef = useRef<HTMLAudioElement>(null);
+  const audioPlayer = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (audioPlayer.current && !audioPlayerRef) {
+      setAudioPlayerRef(audioPlayer.current);
+    }
+  }, [audioPlayer, audioPlayerRef, setAudioPlayerRef]);
 
   useEffect(() => {
     if (
       lastSetTime &&
       isInitialized &&
-      audioPlayerRef.current &&
-      lastSetTime !== audioPlayerRef.current.currentTime
+      audioPlayer.current &&
+      lastSetTime !== audioPlayer.current.currentTime
     ) {
-      audioPlayerRef.current.currentTime = lastSetTime;
+      audioPlayer.current.currentTime = lastSetTime;
       setLastSetTime(undefined);
     }
   }, [currentTime, isInitialized, lastSetTime, setLastSetTime]);
 
   const handleCanPlay = () => {
-    if (!isInitialized && audioPlayerRef.current) {
-      audioPlayerRef.current.currentTime = currentTime;
+    if (!isInitialized && audioPlayer.current) {
+      audioPlayer.current.currentTime = currentTime;
       setIsInitialized(true);
     }
   };
 
   const handleTimeUpdate = debounce(() => {
-    if (audioPlayerRef.current) {
-      setCurrentTime(parseFloat(audioPlayerRef.current.currentTime.toFixed(2)));
+    if (audioPlayer.current) {
+      setCurrentTime(parseFloat(audioPlayer.current.currentTime.toFixed(2)));
     }
   }, 200);
 
   return (
     <audio
-      ref={audioPlayerRef}
+      ref={audioPlayer}
       className={styles.root}
       controls
       src="/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3"

@@ -4,7 +4,7 @@ import { ObjectSchema, number, object, string } from 'yup';
 
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { currentTimeAtom } from '../../../atoms/audio';
+import { currentTimeAtom } from '../../../atoms/audioPlayer';
 import {
   selectedLyricsLineAtom,
   selectedLyricsLineIndexAtom,

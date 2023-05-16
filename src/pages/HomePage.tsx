@@ -1,20 +1,18 @@
 import { useAtom } from 'jotai';
-import { settingsAtom, showSettingsModalAtom } from '../atoms/settings';
+import { showSettingsModalAtom } from '../atoms/settings';
 import AudioPlayer from '../components/modules/audio/AudioPlayer';
 import LyricsFileActions from '../components/modules/lyrics/LyricsFileActions';
 import LyricsForm from '../components/modules/lyrics/LyricsForm';
 import LyricsLinesList from '../components/modules/lyrics/LyricsLinesList';
 import Presentation from '../components/modules/presentation/Presentation';
-import styles from './HomePage.module.scss';
 import SettingsModal from '../components/modules/settings/SettingsModal';
 import Button from '../components/shared/Button';
-import PresentationControls from '../components/modules/presentation/PresentationControls';
-import { isPlayingAtom } from '../atoms/presentation';
+import styles from './HomePage.module.scss';
+import { useState } from 'react';
 
 const HomePage = () => {
   const [showSettingsModal, setShowSettingsModal] = useAtom(showSettingsModalAtom);
-  const [settings] = useAtom(settingsAtom);
-  const [isPlaying] = useAtom(isPlayingAtom);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const handleCloseSettingsModal = (): void => {
     setShowSettingsModal(false);
@@ -24,12 +22,19 @@ const HomePage = () => {
     setShowSettingsModal(true);
   };
 
+  const handlePlayPresentation = (): void => {
+    setIsPlaying(true);
+  };
+
+  const handleStopPresentation = (): void => {
+    setIsPlaying(false);
+  };
+
   return (
     <>
       <div className={styles.root}>
         <div className={styles.pageContainer}>
-          {settings.showPresentationControls && <PresentationControls />}
-          <Presentation />
+          <Presentation onPlay={handlePlayPresentation} onStop={handleStopPresentation} />
           <AudioPlayer />
           {!isPlaying && (
             <div className={styles.lyricsWrapper}>

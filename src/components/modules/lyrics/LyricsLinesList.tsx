@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useEffect, useRef, useState } from 'react';
 
-import { lastSetTimeAtom } from '../../../atoms/audio';
+import { lastSetTimeAtom } from '../../../atoms/audioPlayer';
 import {
   currentLyricsLineIndexAtom,
   lyricsLinesAtom,

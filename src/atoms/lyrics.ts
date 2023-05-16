@@ -2,7 +2,7 @@ import { atomWithStorage } from 'jotai/utils';
 import { LyricsLine } from '../types/lyrics';
 import { atom } from 'jotai';
 import { sortBy } from 'lodash';
-import { currentTimeAtom } from './audio';
+import { currentTimeAtom } from './audioPlayer';
 
 const lyricsLinesAtomLocalStorage = atomWithStorage<LyricsLine[]>('lyricsLines', []);
 
