@@ -8,4 +8,5 @@ export const settingsAtom = atomWithStorage<Settings>('settings', {
   autoFollowLyricsList: false,
   showTibetan: false,
   presentationZoomLevel: 1.5,
+  showPresentationControls: false,
 });

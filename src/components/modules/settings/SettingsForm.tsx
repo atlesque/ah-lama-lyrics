@@ -40,6 +40,20 @@ const SettingsForm = () => {
           />
           <label htmlFor="checkbox-autoFollowLyricsList">Auto-follow lyrics</label>
         </li>
+        <li className={styles.checkboxWrapper}>
+          <Input
+            id="checkbox-showPresentationControls"
+            type="checkbox"
+            checked={settings.showPresentationControls}
+            onChange={() =>
+              handleChangeSettings({
+                ...settings,
+                showPresentationControls: !settings.showPresentationControls,
+              })
+            }
+          />
+          <label htmlFor="checkbox-showPresentationControls">Show presentation controls</label>
+        </li>
       </ul>
       <Input
         placeholder="Text zoom level"
