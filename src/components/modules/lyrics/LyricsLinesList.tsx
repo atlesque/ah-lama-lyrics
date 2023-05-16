@@ -44,7 +44,9 @@ const LyricsLinesList = () => {
   useEffect(() => {
     if (settings.autoFollowLyricsList && rootRef.current && currentLineIndex !== undefined) {
       const currentLineElement = rootRef.current.querySelectorAll('li')[currentLineIndex];
-      currentLineElement.scrollIntoView({ behavior: 'smooth' });
+      if (currentLineElement) {
+        currentLineElement.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }, [currentLineIndex, settings.autoFollowLyricsList]);
 

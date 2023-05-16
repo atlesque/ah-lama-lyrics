@@ -54,6 +54,20 @@ const SettingsForm = () => {
           />
           <label htmlFor="checkbox-showPresentationControls">Show presentation controls</label>
         </li>
+        <li className={styles.checkboxWrapper}>
+          <Input
+            id="checkbox-showImageInput"
+            type="checkbox"
+            checked={settings.showImageInput}
+            onChange={() =>
+              handleChangeSettings({
+                ...settings,
+                showImageInput: !settings.showImageInput,
+              })
+            }
+          />
+          <label htmlFor="checkbox-showImageInput">Show image input</label>
+        </li>
       </ul>
       <Input
         placeholder="Text zoom level"

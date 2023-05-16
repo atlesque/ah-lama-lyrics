@@ -9,4 +9,5 @@ export const settingsAtom = atomWithStorage<Settings>('settings', {
   showTibetan: false,
   presentationZoomLevel: 1.5,
   showPresentationControls: false,
+  showImageInput: false,
 });

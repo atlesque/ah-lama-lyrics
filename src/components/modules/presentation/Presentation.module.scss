@@ -56,7 +56,7 @@
   gap: var(--spacing);
   flex: 1;
   text-align: center;
-  padding: var(--spacing-4);
+  padding: var(--spacing) var(--spacing-4);
 }
 
 .textTibetan {
@@ -86,4 +86,8 @@
   color: var(--color-gray-main);
   font-size: var(--font-size-h4);
   font-family: var(--font-family-display);
+}
+
+.image {
+  max-width: 43%;
 }

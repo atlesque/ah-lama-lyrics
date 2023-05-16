@@ -3,4 +3,5 @@ export interface Settings {
   autoFollowLyricsList: boolean;
   presentationZoomLevel: number;
   showPresentationControls: boolean;
+  showImageInput: boolean;
 }

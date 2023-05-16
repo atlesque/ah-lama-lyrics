@@ -118,7 +118,7 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
                 <span className={styles.textSubtitle}>{titleScreen?.subtitle}</span>
               </>
             )}
-            {!titleScreen && currentLine && (
+            {!titleScreen && !currentLine?.image && (
               <>
                 {settings.showTibetan && (
                   <span className={styles.textTibetan}>{currentLine?.tibetan}</span>
@@ -126,6 +126,9 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
                 <span className={styles.textTransliteration}>{currentLine?.transliteration}</span>
                 <span className={styles.textEnglish}>{currentLine?.english}</span>
               </>
+            )}
+            {!titleScreen && currentLine?.image && (
+              <img src={currentLine?.image} className={styles.image} />
             )}
           </div>
           <div className={styles.verticalDecoration}></div>

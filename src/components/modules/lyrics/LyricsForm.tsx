@@ -45,6 +45,7 @@ const LyricsForm = () => {
     tibetan: string(),
     transliteration: string(),
     english: string(),
+    image: string(),
   });
 
   const methods = useForm<LyricsLine>({
@@ -187,6 +188,14 @@ const LyricsForm = () => {
           error={errors.english?.message}
           autoComplete="off"
         />
+        {settings.showImageInput && (
+          <Input
+            {...register('image')}
+            placeholder="Image"
+            error={errors.image?.message}
+            autoComplete="off"
+          />
+        )}
         <Button type="submit" color="success">
           {activeLyricsLineIndex !== undefined ? 'Save' : 'Add new'}
         </Button>
