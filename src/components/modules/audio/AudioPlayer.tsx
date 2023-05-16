@@ -3,12 +3,18 @@ import styles from './AudioPlayer.module.scss';
 
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { audioPlayerRefAtom, currentTimeAtom, lastSetTimeAtom } from '../../../atoms/audioPlayer';
+import {
+  audioPlayerHasEndedAtom,
+  audioPlayerRefAtom,
+  currentTimeAtom,
+  lastSetTimeAtom,
+} from '../../../atoms/audioPlayer';
 
 const AudioPlayer = () => {
   const [currentTime, setCurrentTime] = useAtom(currentTimeAtom);
   const [lastSetTime, setLastSetTime] = useAtom(lastSetTimeAtom);
   const [audioPlayerRef, setAudioPlayerRef] = useAtom(audioPlayerRefAtom);
+  const [, setAudioPlayerHasEnded] = useAtom(audioPlayerHasEndedAtom);
   const [isInitialized, setIsInitialized] = useState(false);
   const audioPlayer = useRef<HTMLAudioElement>(null);
 
@@ -43,6 +49,14 @@ const AudioPlayer = () => {
     }
   }, 200);
 
+  const handlePlay = () => {
+    setAudioPlayerHasEnded(false);
+  };
+
+  const handleEnded = () => {
+    setAudioPlayerHasEnded(true);
+  };
+
   return (
     <audio
       ref={audioPlayer}
@@ -51,6 +65,8 @@ const AudioPlayer = () => {
       src="/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3"
       onTimeUpdate={handleTimeUpdate}
       onCanPlay={handleCanPlay}
+      onPlay={handlePlay}
+      onEnded={handleEnded}
     >
       <a href="/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3">Download audio</a>
     </audio>

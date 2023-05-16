@@ -1,15 +1,23 @@
 import { useAtom } from 'jotai';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { currentLyricsLineAtom } from '../../../atoms/lyrics';
 import { settingsAtom } from '../../../atoms/settings';
 import { LyricsLine } from '../../../types/lyrics';
 import Button from '../../shared/Button';
 import styles from './Presentation.module.scss';
-import { audioPlayerRefAtom } from '../../../atoms/audioPlayer';
+import { audioPlayerHasEndedAtom, audioPlayerRefAtom } from '../../../atoms/audioPlayer';
 
 const INTRO_TIME = 8000;
+const OUTRO_TIME = 8000;
 
 const INTRO_TEXT: LyricsLine = {
+  startTime: 0,
+  endTime: 5,
+  transliteration: 'Guru Yoga That Brings Swift Realisations',
+  english: 'His Holiness the Great Siddha Lungdok Gyaltsen Rinpoche',
+};
+
+const OUTRO_TEXT: LyricsLine = {
   startTime: 0,
   endTime: 5,
   transliteration: 'Guru Yoga That Brings Swift Realisations',
@@ -25,9 +33,11 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
   const [currentLine] = useAtom(currentLyricsLineAtom);
   const [settings] = useAtom(settingsAtom);
   const [audioPlayer] = useAtom(audioPlayerRefAtom);
+  const [audioPlayerHasEnded] = useAtom(audioPlayerHasEndedAtom);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const [isPlayingIntro, setIsPlayingIntro] = useState(false);
+  const [isPlayingOutro, setIsPlayingOutro] = useState(false);
   const [presentationTimerId, setPresentationTimerId] = useState<number | undefined>(undefined);
 
   const startMainPresentation = (): void => {
@@ -65,8 +75,21 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
     if (isPlayingIntro) {
       return INTRO_TEXT;
     }
+    if (isPlayingOutro) {
+      return OUTRO_TEXT;
+    }
     return currentLine;
-  }, [currentLine, isPlayingIntro]);
+  }, [currentLine, isPlayingIntro, isPlayingOutro]);
+
+  useEffect(() => {
+    if (audioPlayerHasEnded) {
+      setIsPlayingOutro(true);
+      setTimeout(() => {
+        setIsPlayingOutro(false);
+        setIsPlaying(false);
+      }, OUTRO_TIME);
+    }
+  }, [audioPlayerHasEnded, isPlaying]);
 
   return (
     <div className={styles.root}>
