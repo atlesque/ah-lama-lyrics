@@ -5,15 +5,28 @@ import clsx from 'clsx';
 interface InputProps extends React.ComponentPropsWithRef<'input'> {
   error?: string;
   isFullWidth?: boolean;
+  showLabel?: boolean;
   showPlaceholder?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ error, isFullWidth = false, showPlaceholder = false, className, ...inputProps }, ref) => (
+  (
+    {
+      error,
+      isFullWidth = false,
+      showLabel = true,
+      showPlaceholder = false,
+      className,
+      ...inputProps
+    },
+    ref
+  ) => (
     <div className={styles.root}>
-      <label htmlFor={inputProps.name} className={styles.label}>
-        {inputProps.placeholder}
-      </label>
+      {showLabel && (
+        <label htmlFor={inputProps.name} className={styles.label}>
+          {inputProps.placeholder}
+        </label>
+      )}
       <input
         id={inputProps.id ?? inputProps.name}
         {...inputProps}
