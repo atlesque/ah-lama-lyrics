@@ -18,12 +18,19 @@ import Text from '../../shared/Text';
 import styles from './LyricsForm.module.scss';
 import { settingsAtom } from '../../../atoms/settings';
 
+interface OnSaveLyricsProps {
+  updatedLine: LyricsLine;
+  editNextAfterSave?: boolean;
+}
+
 const LyricsForm = () => {
   const [lyricsLines, setLyricsLines] = useAtom(lyricsLinesAtom);
   const [activeLyricsLine] = useAtom(selectedLyricsLineAtom);
   const [activeLyricsLineIndex, setActiveLyricsLineIndex] = useAtom(selectedLyricsLineIndexAtom);
   const [currentTime] = useAtom(currentTimeAtom);
   const [settings] = useAtom(settingsAtom);
+
+  const isEditingExistingLine = activeLyricsLineIndex !== undefined;
 
   const lyricsSchema: ObjectSchema<LyricsLine> = object({
     startTime: number()
@@ -61,6 +68,7 @@ const LyricsForm = () => {
 
   const {
     formState: { errors },
+
     handleSubmit,
     register,
     setValue,
@@ -78,7 +86,7 @@ const LyricsForm = () => {
     setValue('english', activeLyricsLine.english);
   }, [activeLyricsLine, resetForm, setValue]);
 
-  const onSaveLyrics = (updatedLine: LyricsLine): void => {
+  const onSaveLyrics = ({ updatedLine, editNextAfterSave = false }: OnSaveLyricsProps): void => {
     const updatedLines = [...lyricsLines];
     if (activeLyricsLineIndex === undefined) {
       const newLine = { ...updatedLine };
@@ -99,7 +107,11 @@ const LyricsForm = () => {
       updatedLines[activeLyricsLineIndex] = updatedLine;
       setLyricsLines(updatedLines);
     }
-    setActiveLyricsLineIndex(undefined);
+    setActiveLyricsLineIndex(
+      editNextAfterSave && activeLyricsLineIndex !== undefined
+        ? activeLyricsLineIndex + 1
+        : undefined
+    );
     resetForm();
   };
 
@@ -123,9 +135,16 @@ const LyricsForm = () => {
     setValue(timeType, currentTime);
   };
 
+  const handleSaveAndNextClick = (): void => {
+    handleSubmit(updatedLine => onSaveLyrics({ updatedLine, editNextAfterSave: true }))();
+  };
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSaveLyrics)} className={styles.form}>
+      <form
+        onSubmit={handleSubmit(updatedLine => onSaveLyrics({ updatedLine }))}
+        className={styles.form}
+      >
         <fieldset className={styles.inputGroup}>
           <div>
             <div className={styles.timeInputGroup}>
@@ -139,6 +158,7 @@ const LyricsForm = () => {
               />
               <Button
                 type="button"
+                variant="contained"
                 className={styles.setTimeButton}
                 onClick={() => handleSetTimeClick('startTime')}
               >
@@ -159,6 +179,7 @@ const LyricsForm = () => {
               />
               <Button
                 type="button"
+                variant="contained"
                 className={styles.setTimeButton}
                 onClick={() => handleSetTimeClick('endTime')}
               >
@@ -196,15 +217,32 @@ const LyricsForm = () => {
             autoComplete="off"
           />
         )}
-        <Button type="submit" color="success">
-          {activeLyricsLineIndex !== undefined ? 'Save' : 'Add new'}
-        </Button>
-        {activeLyricsLineIndex !== undefined && (
+        <div className={styles.inputGroup}>
+          <Button type="submit" color="success" variant="contained">
+            {isEditingExistingLine ? 'Save & close' : 'Add new'}
+          </Button>
+          {isEditingExistingLine && (
+            <Button
+              type="button"
+              color="success"
+              variant="contained"
+              onClick={handleSaveAndNextClick}
+            >
+              Save & next
+            </Button>
+          )}
+        </div>
+        {isEditingExistingLine && (
           <>
-            <Button type="button" color="info" onClick={handleCancelClick}>
+            <Button type="button" color="info" variant="contained" onClick={handleCancelClick}>
               Cancel
             </Button>
-            <ConfirmButton type="button" color="error" onClick={handleDeleteClick}>
+            <ConfirmButton
+              type="button"
+              color="error"
+              variant="contained"
+              onClick={handleDeleteClick}
+            >
               Delete
             </ConfirmButton>
           </>
