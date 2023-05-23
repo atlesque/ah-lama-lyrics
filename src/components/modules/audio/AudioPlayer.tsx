@@ -1,6 +1,7 @@
 import { useAtom } from 'jotai';
 import styles from './AudioPlayer.module.scss';
 
+import clsx from 'clsx';
 import { debounce } from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -9,7 +10,8 @@ import {
   currentTimeAtom,
   lastSetTimeAtom,
 } from '../../../atoms/audioPlayer';
-import clsx from 'clsx';
+
+const AUDIO_FILE_LOCATION = '/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3';
 
 interface AudioPlayerClasses {
   root?: string;
@@ -44,7 +46,7 @@ const AudioPlayer = ({ classes }: AudioPlayerProps) => {
     }
   }, [currentTime, isInitialized, lastSetTime, setLastSetTime]);
 
-  const handleCanPlay = () => {
+  const handleCanPlayThrough = () => {
     if (!isInitialized && audioPlayer.current) {
       audioPlayer.current.currentTime = currentTime;
       setIsInitialized(true);
@@ -70,13 +72,13 @@ const AudioPlayer = ({ classes }: AudioPlayerProps) => {
       ref={audioPlayer}
       className={clsx(styles.root, classes?.root)}
       controls
-      src="/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3"
+      src={AUDIO_FILE_LOCATION}
       onTimeUpdate={handleTimeUpdate}
-      onCanPlay={handleCanPlay}
+      onCanPlayThrough={handleCanPlayThrough}
       onPlay={handlePlay}
       onEnded={handleEnded}
     >
-      <a href="/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3">Download audio</a>
+      <a href={AUDIO_FILE_LOCATION}>Download audio</a>
     </audio>
   );
 };
