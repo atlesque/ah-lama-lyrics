@@ -27,7 +27,7 @@
 .presentation {
   background: var(--gradient-primary);
   aspect-ratio: 16 / 9;
-  padding: var(--spacing-2);
+  padding: 1.8%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,21 +36,19 @@
 }
 
 .decoration {
-  background-image: url('/src/assets/images/ah-symbol-padded-3.png');
+  background-image: url('/src/assets/images/ah-symbol-orange-v3.svg');
   background-repeat: space;
   background-size: contain;
 }
 
 .horizontalDecoration {
   @extend .decoration;
-  // height: 22px;
-  height: 3.8%;
+  height: 4.4%;
 }
 
 .verticalDecoration {
   @extend .decoration;
-  // width: 24px;
-  width: 2.5%;
+  width: 2.9%;
 }
 
 .contentWrapper {
@@ -65,33 +63,49 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: var(--spacing);
   flex: 1;
   text-align: center;
-  padding: var(--spacing) var(--spacing-4);
+  padding: var(--spacing);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.6;
 
   @media all and (display-mode: fullscreen) {
     span {
       font-size: clamp(0.75rem, 0.7143rem + 2.1vw, 10rem);
+    }
+    .textTibetan {
+      font-size: clamp(0.75rem, 0.7143rem + 3.75vw, 10rem);
+    }
+    .textTransliteration {
+      font-size: clamp(0.75rem, 0.7143rem + 2.4vw, 10rem);
+    }
+    .textEnglish {
+      font-size: clamp(0.75rem, 0.7143rem + 1.75vw, 10rem);
     }
   }
 }
 
 .textTibetan {
   color: var(--color-secondary-main);
-  font-size: calc(var(--font-size-h2) * 2);
+  font-size: calc(var(--font-size-h2) * 1.7);
+  text-shadow: var(--text-shadow);
+  line-height: 32px;
+  margin-bottom: 3%;
 }
 
 .textTransliteration {
   color: var(--color-primary-contrast);
-  font-size: var(--font-size-h2);
+  font-size: var(--font-size-h1);
   font-family: var(--font-family-serif);
+  text-transform: lowercase;
+  text-shadow: var(--text-shadow);
 }
 
 .textEnglish {
   color: var(--color-gray-main);
-  font-size: var(--font-size-h2);
+  font-size: var(--font-size-h3);
   font-family: var(--font-family-display);
+  text-shadow: var(--text-shadow);
 }
 
 .textTitle {
@@ -102,7 +116,7 @@
 
 .textSubtitle {
   color: var(--color-gray-main);
-  font-size: var(--font-size-h4);
+  font-size: var(--font-size-h3);
   font-family: var(--font-family-display);
 }
 
