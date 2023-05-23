@@ -219,7 +219,7 @@ const LyricsForm = () => {
             autoComplete="off"
           />
         )}
-        <div className={styles.inputGroup}>
+        <div className={styles.saveButtonGroup}>
           <Button type="submit" color="success" variant="contained">
             {isEditingExistingLine ? 'Save & close' : 'Add new'}
           </Button>

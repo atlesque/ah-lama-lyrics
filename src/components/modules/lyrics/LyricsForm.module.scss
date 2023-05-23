@@ -20,3 +20,13 @@
 .setTimeButton {
   height: 38px;
 }
+
+.saveButtonGroup {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-2);
+
+  & > * {
+    flex: 1;
+  }
+}
