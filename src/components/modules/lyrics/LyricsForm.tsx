@@ -108,7 +108,9 @@ const LyricsForm = () => {
       setLyricsLines(updatedLines);
     }
     setActiveLyricsLineIndex(
-      editNextAfterSave && activeLyricsLineIndex !== undefined
+      editNextAfterSave &&
+        activeLyricsLineIndex !== undefined &&
+        activeLyricsLineIndex + 1 < updatedLines.length
         ? activeLyricsLineIndex + 1
         : undefined
     );
