@@ -5,6 +5,10 @@
   flex-direction: column;
   align-items: center;
   padding: var(--spacing-2);
+
+  @media all and (display-mode: fullscreen) {
+    padding: 0;
+  }
 }
 
 .pageContainer {
@@ -15,6 +19,17 @@
   padding: var(--spacing-2);
   flex: 1;
   gap: var(--spacing-4);
+
+  @media all and (display-mode: fullscreen) {
+    padding: 0;
+    max-width: none;
+  }
+}
+
+.audioPlayer {
+  @media all and (display-mode: fullscreen) {
+    display: none;
+  }
 }
 
 .lyricsWrapper {

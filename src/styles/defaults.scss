@@ -4,6 +4,10 @@ body {
   min-height: 100vh;
   background-color: var(--color-background-main);
   overflow-y: scroll;
+
+  @media all and (display-mode: fullscreen) {
+    overflow: hidden;
+  }
 }
 
 #root {

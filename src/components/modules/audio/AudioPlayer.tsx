@@ -9,8 +9,16 @@ import {
   currentTimeAtom,
   lastSetTimeAtom,
 } from '../../../atoms/audioPlayer';
+import clsx from 'clsx';
 
-const AudioPlayer = () => {
+interface AudioPlayerClasses {
+  root?: string;
+}
+interface AudioPlayerProps {
+  classes?: AudioPlayerClasses;
+}
+
+const AudioPlayer = ({ classes }: AudioPlayerProps) => {
   const [currentTime, setCurrentTime] = useAtom(currentTimeAtom);
   const [lastSetTime, setLastSetTime] = useAtom(lastSetTimeAtom);
   const [audioPlayerRef, setAudioPlayerRef] = useAtom(audioPlayerRefAtom);
@@ -60,7 +68,7 @@ const AudioPlayer = () => {
   return (
     <audio
       ref={audioPlayer}
-      className={styles.root}
+      className={clsx(styles.root, classes?.root)}
       controls
       src="/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3"
       onTimeUpdate={handleTimeUpdate}

@@ -35,7 +35,7 @@ const HomePage = () => {
       <div className={styles.root}>
         <div className={styles.pageContainer}>
           <Presentation onPlay={handlePlayPresentation} onStop={handleStopPresentation} />
-          <AudioPlayer />
+          <AudioPlayer classes={{ root: styles.audioPlayer }} />
           {!isPlaying && (
             <div className={styles.lyricsWrapper}>
               <LyricsForm />
