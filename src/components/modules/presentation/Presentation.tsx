@@ -93,10 +93,10 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
-      if (event.code === 'KeyP' && !isPlaying) {
+      if (event.code === 'KeyP' && event.altKey && !isPlaying) {
         handlePlayClick();
       }
-      if (event.code === 'KeyS' && isPlaying) {
+      if (event.code === 'KeyS' && event.altKey && isPlaying) {
         handleStopClick();
       }
     },
