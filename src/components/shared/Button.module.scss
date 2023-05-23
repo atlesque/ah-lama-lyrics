@@ -27,14 +27,6 @@
 /*
   Variants
 */
-.outlined {
-  // TODO:
-}
-
-.contained {
-  // TODO:
-}
-
 .text {
   border: none;
   background-color: none;
@@ -59,6 +51,7 @@
   border-color: var(--color-secondary-main);
 
   &.contained {
+    color: var(--color-secondary-contrast);
     background-color: var(--color-secondary-main);
   }
 }
@@ -68,6 +61,7 @@
   border-color: var(--color-info-main);
 
   &.contained {
+    color: var(--color-info-contrast);
     background-color: var(--color-info-main);
   }
 }
@@ -77,6 +71,7 @@
   border-color: var(--color-success-main);
 
   &.contained {
+    color: var(--color-success-contrast);
     background-color: var(--color-success-main);
   }
 
@@ -91,6 +86,7 @@
   border-color: var(--color-warning-main);
 
   &.contained {
+    color: var(--color-warning-contrast);
     background-color: var(--color-warning-main);
   }
 }
