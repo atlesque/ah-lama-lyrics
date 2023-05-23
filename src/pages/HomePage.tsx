@@ -1,4 +1,5 @@
 import { useAtom } from 'jotai';
+import { useState } from 'react';
 import { showSettingsModalAtom } from '../atoms/settings';
 import AudioPlayer from '../components/modules/audio/AudioPlayer';
 import LyricsFileActions from '../components/modules/lyrics/LyricsFileActions';
@@ -8,7 +9,6 @@ import Presentation from '../components/modules/presentation/Presentation';
 import SettingsModal from '../components/modules/settings/SettingsModal';
 import Button from '../components/shared/Button';
 import styles from './HomePage.module.scss';
-import { useState } from 'react';
 
 const HomePage = () => {
   const [showSettingsModal, setShowSettingsModal] = useAtom(showSettingsModalAtom);

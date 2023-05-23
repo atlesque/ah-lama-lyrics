@@ -1,15 +1,10 @@
 import { useAtom } from 'jotai';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { audioPlayerHasEndedAtom, audioPlayerRefAtom } from '../../../atoms/audioPlayer';
 import { currentLyricsLineAtom } from '../../../atoms/lyrics';
 import { settingsAtom } from '../../../atoms/settings';
-import { LyricsLine } from '../../../types/lyrics';
 import Button from '../../shared/Button';
 import styles from './Presentation.module.scss';
-import {
-  audioPlayerHasEndedAtom,
-  audioPlayerRefAtom,
-  currentTimeAtom,
-} from '../../../atoms/audioPlayer';
 
 const INTRO_TIME = 8000;
 const OUTRO_TIME = 8000;
@@ -35,7 +30,6 @@ interface PresentationProps {
 }
 
 const Presentation = ({ onPlay, onStop }: PresentationProps) => {
-  const [, setCurrentTime] = useAtom(currentTimeAtom);
   const [currentLine] = useAtom(currentLyricsLineAtom);
   const [settings] = useAtom(settingsAtom);
   const [audioPlayer] = useAtom(audioPlayerRefAtom);
@@ -46,15 +40,15 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
   const [isPlayingOutro, setIsPlayingOutro] = useState(false);
   const [presentationTimerId, setPresentationTimerId] = useState<number | undefined>(undefined);
 
-  const startMainPresentation = (): void => {
+  const startMainPresentation = useCallback(() => {
     if (!audioPlayer) {
       return;
     }
     setIsPlayingIntro(false);
     audioPlayer.play();
-  };
+  }, [audioPlayer]);
 
-  const handlePlayClick = (): void => {
+  const handlePlayClick = useCallback(() => {
     setIsPlayingIntro(true);
     setIsPlaying(true);
     const presentationTimerId = setTimeout(() => {
@@ -62,9 +56,9 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
     }, INTRO_TIME);
     setPresentationTimerId(presentationTimerId);
     onPlay();
-  };
+  }, [onPlay, startMainPresentation]);
 
-  const handleStopClick = (): void => {
+  const handleStopClick = useCallback(() => {
     if (!audioPlayer) {
       return;
     }
@@ -75,7 +69,7 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
     onStop();
     audioPlayer.pause();
     audioPlayer.currentTime = 0;
-  };
+  }, [audioPlayer, onStop, presentationTimerId]);
 
   const titleScreen: TitleLine | undefined = useMemo(() => {
     if (isPlayingIntro) {
@@ -96,6 +90,23 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
       }, OUTRO_TIME);
     }
   }, [audioPlayerHasEnded, isPlaying]);
+
+  const handleKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.code === 'KeyP' && !isPlaying) {
+        handlePlayClick();
+      }
+      if (event.code === 'KeyS' && isPlaying) {
+        handleStopClick();
+      }
+    },
+    [handlePlayClick, handleStopClick, isPlaying]
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
+  }, [handleKeyPress]);
 
   return (
     <div className={styles.root}>
