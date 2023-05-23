@@ -7,7 +7,7 @@ export const showSettingsModalAtom = atom<boolean>(false);
 export const settingsAtom = atomWithStorage<Settings>('settings', {
   autoFollowLyricsList: false,
   showTibetan: false,
-  presentationZoomLevel: 1.5,
+  presentationZoomLevel: 1.7,
   showPresentationControls: false,
   showImageInput: false,
 });
