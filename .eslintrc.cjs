@@ -21,5 +21,12 @@ module.exports = {
   plugins: ['react-refresh', 'html'],
   rules: {
     'react-refresh/only-export-components': 'warn',
+    'no-console': 'warn',
+    'no-debugger': 'error',
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
   },
 };
