@@ -15,6 +15,7 @@ import { LyricsLine } from '../../../types/lyrics';
 import Button from '../../shared/Button';
 import styles from './LyricsLinesList.module.scss';
 import { settingsAtom } from '../../../atoms/settings';
+import WarningTriangleIcon from '../../../icons/WarningTriangleIcon';
 
 const LyricsLinesList = () => {
   const [lyricsLines] = useAtom(lyricsLinesAtom);
@@ -50,6 +51,12 @@ const LyricsLinesList = () => {
     }
   }, [currentLineIndex, settings.autoFollowLyricsList]);
 
+  const isNextLineConsecutive = (lineIndex: number) => {
+    const currentLine = lyricsLines[lineIndex];
+    const nextLine = lyricsLines[lineIndex + 1];
+    return currentLine && nextLine && currentLine.endTime === nextLine.startTime;
+  };
+
   return (
     <ul className={styles.root} ref={rootRef}>
       {lyricsLines.map((line, index) => (
@@ -60,9 +67,14 @@ const LyricsLinesList = () => {
             })}
             onClick={() => handleLineClick(line)}
           >
-            <span className={styles.lyricsTimecode}>
-              {getSecondsAsTimecode(line.startTime)} - {getSecondsAsTimecode(line.endTime)}
-            </span>
+            <div className={styles.timecodeRow}>
+              <span className={styles.lyricsTimecode}>
+                {getSecondsAsTimecode(line.startTime)} - {getSecondsAsTimecode(line.endTime)}
+              </span>
+              {index < lyricsLines.length - 1 && !isNextLineConsecutive(index) && (
+                <WarningTriangleIcon className={styles.timeWarningIcon} />
+              )}
+            </div>
             <span>{line.tibetan}</span>
             <span>{line.transliteration}</span>
             <span>{line.english}</span>

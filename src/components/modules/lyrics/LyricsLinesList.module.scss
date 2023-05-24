@@ -43,6 +43,18 @@
   font-size: var(--font-size-small);
 }
 
+.timecodeRow {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing);
+  align-items: baseline;
+}
+
+.timeWarningIcon {
+  width: 11px;
+  color: var(--color-warning-dark);
+}
+
 .actionButton {
   display: flex;
 }
