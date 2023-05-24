@@ -17,6 +17,7 @@ import Input from '../../shared/Input';
 import Text from '../../shared/Text';
 import styles from './LyricsForm.module.scss';
 import { settingsAtom } from '../../../atoms/settings';
+import { getSecondsAsTimecode } from '../../../helpers/getSecondsAsTimecode';
 
 interface OnSaveLyricsProps {
   updatedLine: LyricsLine;
@@ -68,12 +69,15 @@ const LyricsForm = () => {
 
   const {
     formState: { errors },
-
     handleSubmit,
     register,
     setValue,
+    watch,
     reset: resetForm,
   } = methods;
+
+  const watchStartTime = watch('startTime');
+  const watchEndTime = watch('endTime');
 
   useEffect(() => {
     if (activeLyricsLine === undefined) {
@@ -167,6 +171,7 @@ const LyricsForm = () => {
                 Set
               </Button>
             </div>
+            <small>{getSecondsAsTimecode(watchStartTime)}</small>
             {errors.startTime?.message && <Text color="error">{errors.startTime?.message}</Text>}
           </div>
           <div>
@@ -189,6 +194,7 @@ const LyricsForm = () => {
               </Button>
             </div>
             {errors.endTime?.message && <Text color="error">{errors.endTime?.message}</Text>}
+            <small>{getSecondsAsTimecode(watchEndTime)}</small>
           </div>
         </fieldset>
         {settings.showTibetan && (
