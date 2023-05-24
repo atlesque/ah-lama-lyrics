@@ -110,6 +110,20 @@
   font-family: var(--font-family-display);
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.textTitle,
+.textSubtitle {
+  animation: 3s fadeIn;
+}
+
 .image {
   max-width: 43%;
 }
