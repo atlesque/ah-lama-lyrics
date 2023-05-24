@@ -69,6 +69,7 @@
   font-weight: var(--font-weight-bold);
   line-height: 1.6;
   container-type: inline-size;
+  gap: 1cqw;
 }
 
 .textTibetan {
@@ -92,7 +93,7 @@
 .textEnglish {
   color: var(--color-gray-main);
   font-size: 4.4cqw;
-  line-height: 10cqw;
+  line-height: 6cqw;
   font-family: var(--font-family-display);
   text-shadow: var(--text-shadow);
 }
