@@ -68,26 +68,13 @@
   padding: var(--spacing);
   font-weight: var(--font-weight-bold);
   line-height: 1.6;
-
-  @media all and (display-mode: fullscreen) {
-    span {
-      font-size: clamp(0.75rem, 0.7143rem + 2.1vw, 10rem);
-    }
-    .textTibetan {
-      font-size: clamp(0.75rem, 0.7143rem + 3.75vw, 10rem);
-    }
-    .textTransliteration {
-      font-size: clamp(0.75rem, 0.7143rem + 2.4vw, 10rem);
-    }
-    .textEnglish {
-      font-size: clamp(0.75rem, 0.7143rem + 1.75vw, 10rem);
-    }
-  }
+  container-type: inline-size;
 }
 
 .textTibetan {
   color: var(--color-secondary-main);
-  font-size: calc(var(--font-size-h2) * 1.7);
+  font-size: 8.2cqw;
+  line-height: 8cqw;
   text-shadow: var(--text-shadow);
   line-height: 32px;
   margin-bottom: 3%;
@@ -95,7 +82,8 @@
 
 .textTransliteration {
   color: var(--color-primary-contrast);
-  font-size: var(--font-size-h1);
+  font-size: 5.9cqw;
+  line-height: 7cqw;
   font-family: var(--font-family-serif);
   text-transform: lowercase;
   text-shadow: var(--text-shadow);
@@ -103,7 +91,8 @@
 
 .textEnglish {
   color: var(--color-gray-main);
-  font-size: var(--font-size-h3);
+  font-size: 4.4cqw;
+  line-height: 10cqw;
   font-family: var(--font-family-display);
   text-shadow: var(--text-shadow);
 }
