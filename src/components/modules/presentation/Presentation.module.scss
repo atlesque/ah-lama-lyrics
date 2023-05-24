@@ -100,13 +100,15 @@
 
 .textTitle {
   color: var(--color-secondary-main);
-  font-size: calc(var(--font-size-h1) * 1.3);
+  font-size: 5.9cqw;
+  line-height: 7cqw;
   font-family: var(--font-family-display);
 }
 
 .textSubtitle {
   color: var(--color-gray-main);
-  font-size: var(--font-size-h3);
+  font-size: 4.4cqw;
+  line-height: 6cqw;
   font-family: var(--font-family-display);
 }
 
