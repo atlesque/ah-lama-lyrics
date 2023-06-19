@@ -63,6 +63,7 @@ const LyricsForm = () => {
       tibetan: '',
       transliteration: '',
       english: '',
+      image: '',
     },
     resolver: yupResolver(lyricsSchema),
   });
@@ -88,6 +89,7 @@ const LyricsForm = () => {
     setValue('tibetan', activeLyricsLine.tibetan);
     setValue('transliteration', activeLyricsLine.transliteration);
     setValue('english', activeLyricsLine.english);
+    setValue('image', activeLyricsLine.image);
   }, [activeLyricsLine, resetForm, setValue]);
 
   const onSaveLyrics = ({ updatedLine, editNextAfterSave = false }: OnSaveLyricsProps): void => {
