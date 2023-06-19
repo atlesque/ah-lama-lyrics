@@ -11,7 +11,7 @@ import {
   lastSetTimeAtom,
 } from '../../../atoms/audioPlayer';
 
-const AUDIO_FILE_LOCATION = '/src/assets/audio/guru_yoga_lama_achuk_tibetan_web.mp3';
+const AUDIO_FILE_LOCATION = '/src/assets/audio/guru_yoga_lama_achuk_tibetan_w_intro.mp3';
 
 interface AudioPlayerClasses {
   root?: string;
