@@ -122,7 +122,13 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
         <div className={styles.horizontalDecoration}></div>
         <div className={styles.contentWrapper}>
           <div className={styles.verticalDecoration}></div>
-          <div className={styles.content} style={{ zoom: settings.presentationZoomLevel }}>
+          <div
+            className={styles.content}
+            style={{
+              zoom: settings.presentationZoomLevel,
+              backgroundImage: `url(${currentLine?.image})`,
+            }}
+          >
             {titleScreen && (
               <>
                 <span className={styles.textTitle}>{titleScreen?.title}</span>
@@ -138,9 +144,9 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
                 <span className={styles.textEnglish}>{currentLine?.english}</span>
               </>
             )}
-            {!titleScreen && currentLine?.image && (
+            {/* {!titleScreen && currentLine?.image && (
               <img src={currentLine?.image} className={styles.image} />
-            )}
+            )} */}
           </div>
           <div className={styles.verticalDecoration}></div>
         </div>

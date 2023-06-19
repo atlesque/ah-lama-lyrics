@@ -44,6 +44,8 @@
 .horizontalDecoration {
   @extend .decoration;
   height: 4.4%;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .verticalDecoration {
@@ -70,6 +72,12 @@
   line-height: 1.6;
   container-type: inline-size;
   gap: 1cqw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-clip: 10px;
+  padding: var(--spacing);
+  background-origin: content-box;
 }
 
 .textTibetan {
