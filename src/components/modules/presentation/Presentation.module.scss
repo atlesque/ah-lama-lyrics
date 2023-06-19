@@ -10,12 +10,17 @@
 
 .controls {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
   @media all and (display-mode: fullscreen) {
     display: none;
   }
+}
+
+.hotkeyHints {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-dark);
 }
 
 .actions {

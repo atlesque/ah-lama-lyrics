@@ -111,12 +111,17 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
   return (
     <div className={styles.root}>
       {settings.showPresentationControls && (
-        <div className={styles.controls}>
-          <div className={styles.actions}>
-            {!isPlaying && <Button onClick={handlePlayClick}>Play</Button>}
-            {isPlaying && <Button onClick={handleStopClick}>Stop</Button>}
+        <>
+          <div className={styles.controls}>
+            <div className={styles.actions}>
+              {!isPlaying && <Button onClick={handlePlayClick}>Play</Button>}
+              {isPlaying && <Button onClick={handleStopClick}>Stop</Button>}
+            </div>
+            <span className={styles.hotkeyHints}>
+              ALT+P to play, ALT+S to stop, F11 for fullscreen
+            </span>
           </div>
-        </div>
+        </>
       )}
       <div className={styles.presentation}>
         <div className={styles.horizontalDecoration}></div>
