@@ -18,9 +18,10 @@ import Text from '../../shared/Text';
 import styles from './LyricsForm.module.scss';
 import { settingsAtom } from '../../../atoms/settings';
 import { getSecondsAsTimecode } from '../../../helpers/getSecondsAsTimecode';
+import TextArea from '../../shared/TextArea';
 
 interface OnSaveLyricsProps {
-  updatedLine: LyricsLine;
+  line: LyricsLine;
   editNextAfterSave?: boolean;
 }
 
@@ -50,6 +51,7 @@ const LyricsForm = () => {
         'End must be after start',
         (item, ctx) => item > ctx.parent.startTime
       ),
+    mixed: string(),
     tibetan: string(),
     transliteration: string(),
     english: string(),
@@ -60,6 +62,7 @@ const LyricsForm = () => {
     defaultValues: {
       startTime: 0,
       endTime: 0,
+      mixed: '',
       tibetan: '',
       transliteration: '',
       english: '',
@@ -86,15 +89,34 @@ const LyricsForm = () => {
     }
     setValue('startTime', activeLyricsLine.startTime);
     setValue('endTime', activeLyricsLine.endTime);
+    setValue('mixed', activeLyricsLine.mixed);
     setValue('tibetan', activeLyricsLine.tibetan);
     setValue('transliteration', activeLyricsLine.transliteration);
     setValue('english', activeLyricsLine.english);
     setValue('image', activeLyricsLine.image);
   }, [activeLyricsLine, resetForm, setValue]);
 
-  const onSaveLyrics = ({ updatedLine, editNextAfterSave = false }: OnSaveLyricsProps): void => {
+  const parseMixedInputLine = (inputLine: LyricsLine): LyricsLine => {
+    if (inputLine?.mixed === undefined) {
+      return inputLine;
+    }
+    const mixedInputLine = inputLine.mixed;
+    const mixedInputLineParts = mixedInputLine.split('\n');
+    const tibetan = mixedInputLineParts[0]?.trim();
+    const transliteration = mixedInputLineParts[1]?.trim();
+    const english = mixedInputLineParts[2]?.trim();
+    return {
+      ...inputLine,
+      tibetan,
+      transliteration,
+      english,
+    };
+  };
+
+  const onSaveLyrics = ({ line, editNextAfterSave = false }: OnSaveLyricsProps): void => {
     resetForm();
     const updatedLines = [...lyricsLines];
+    const updatedLine = parseMixedInputLine(line);
     if (activeLyricsLineIndex === undefined) {
       const newLine = { ...updatedLine };
       if (newLine.startTime <= 0) {
@@ -145,15 +167,12 @@ const LyricsForm = () => {
   };
 
   const handleSaveAndNextClick = (): void => {
-    handleSubmit(updatedLine => onSaveLyrics({ updatedLine, editNextAfterSave: true }))();
+    handleSubmit(line => onSaveLyrics({ line, editNextAfterSave: true }))();
   };
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit(updatedLine => onSaveLyrics({ updatedLine }))}
-        className={styles.form}
-      >
+      <form onSubmit={handleSubmit(line => onSaveLyrics({ line }))} className={styles.form}>
         <fieldset className={styles.inputGroup}>
           <div>
             <div className={styles.timeInputGroup}>
@@ -200,6 +219,15 @@ const LyricsForm = () => {
             <small>{getSecondsAsTimecode(watchEndTime)}</small>
           </div>
         </fieldset>
+        {settings.showMixedInput && (
+          <TextArea
+            {...register('mixed')}
+            placeholder="Mixed"
+            error={errors.mixed?.message}
+            autoComplete="off"
+            rows={3}
+          />
+        )}
         {settings.showTibetan && (
           <Input
             {...register('tibetan')}

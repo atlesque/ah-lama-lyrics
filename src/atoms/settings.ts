@@ -11,6 +11,7 @@ export const settingsAtom = atomWithStorage<Settings>('settings', {
   presentationZoomLevel: 1.7,
   showPresentationControls: false,
   showImageInput: false,
+  showMixedInput: false,
   intro: {
     title: '',
     subtitle: '',

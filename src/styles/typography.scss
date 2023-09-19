@@ -34,7 +34,8 @@ body {
   -webkit-text-size-adjust: 100%;
 
   & button,
-  & input {
+  & input,
+  & textarea {
     font-family: inherit;
   }
 }

@@ -10,6 +10,7 @@ export interface Settings {
   presentationZoomLevel: number;
   showPresentationControls: boolean;
   showImageInput: boolean;
+  showMixedInput: boolean;
   intro: SlideSettings;
   outro: SlideSettings;
 }

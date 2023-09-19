@@ -68,6 +68,20 @@ const SettingsForm = () => {
           />
           <label htmlFor="checkbox-showImageInput">Show image input</label>
         </li>
+        <li className={styles.checkboxWrapper}>
+          <Input
+            id="checkbox-showMixedInput"
+            type="checkbox"
+            checked={settings.showMixedInput}
+            onChange={() =>
+              handleChangeSettings({
+                ...settings,
+                showMixedInput: !settings.showMixedInput,
+              })
+            }
+          />
+          <label htmlFor="checkbox-showMixedInput">Show mixed input</label>
+        </li>
       </ul>
       <Input
         placeholder="Text zoom level"
