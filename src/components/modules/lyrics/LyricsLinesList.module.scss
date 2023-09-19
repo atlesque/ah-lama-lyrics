@@ -55,6 +55,19 @@
   color: var(--color-warning-dark);
 }
 
+.tibetan {
+  color: var(--color-secondary-dark);
+}
+
+.transliteration {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+}
+
+.english {
+  font-size: var(--font-size-small);
+}
+
 .actionButton {
   display: flex;
 }

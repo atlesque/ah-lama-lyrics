@@ -75,9 +75,9 @@ const LyricsLinesList = () => {
                 <WarningTriangleIcon className={styles.timeWarningIcon} />
               )}
             </div>
-            <span>{line.tibetan}</span>
-            <span>{line.transliteration}</span>
-            <span>{line.english}</span>
+            <span className={styles.tibetan}>{line.tibetan}</span>
+            <span className={styles.transliteration}>{line.transliteration}</span>
+            <span className={styles.english}>{line.english}</span>
           </button>
           <div>
             <Button className={styles.actionButton} onClick={() => handleEditClick(index)}>
