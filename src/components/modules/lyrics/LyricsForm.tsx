@@ -93,6 +93,7 @@ const LyricsForm = () => {
   }, [activeLyricsLine, resetForm, setValue]);
 
   const onSaveLyrics = ({ updatedLine, editNextAfterSave = false }: OnSaveLyricsProps): void => {
+    resetForm();
     const updatedLines = [...lyricsLines];
     if (activeLyricsLineIndex === undefined) {
       const newLine = { ...updatedLine };
@@ -104,6 +105,7 @@ const LyricsForm = () => {
         prevLine.endTime = newLine.startTime;
       }
       setLyricsLines([...updatedLines, ...(prevLine ? [prevLine] : []), newLine]);
+      setValue('startTime', newLine.endTime);
     } else {
       const prevLine = lyricsLines[activeLyricsLineIndex - 1];
       if (prevLine && prevLine.endTime === lyricsLines[activeLyricsLineIndex].startTime) {
@@ -120,7 +122,6 @@ const LyricsForm = () => {
         ? activeLyricsLineIndex + 1
         : undefined
     );
-    resetForm();
   };
 
   const handleCancelClick = (): void => {
