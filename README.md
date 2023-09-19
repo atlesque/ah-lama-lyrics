@@ -1,6 +1,7 @@
 # Ah Lama Lyrics
-Ah-Lama lyrics generator for dhamma texts
+
+Ah-Lama lyrics generator for Dhamma texts.
 
 ## Setup
 
-`npm run dev` 
+`npm run dev`
