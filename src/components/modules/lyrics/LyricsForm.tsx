@@ -78,6 +78,7 @@ const LyricsForm = () => {
     setValue,
     watch,
     reset: resetForm,
+    getValues,
   } = methods;
 
   const watchStartTime = watch('startTime');
@@ -170,6 +171,14 @@ const LyricsForm = () => {
     handleSubmit(line => onSaveLyrics({ line, editNextAfterSave: true }))();
   };
 
+  const handleAddNewClick = (): void => {
+    const endTime = getValues('endTime');
+    if (!endTime || endTime <= 0) {
+      setValue('endTime', currentTime);
+    }
+    handleSubmit(line => onSaveLyrics({ line }))();
+  };
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(line => onSaveLyrics({ line }))} className={styles.form}>
@@ -257,17 +266,23 @@ const LyricsForm = () => {
           />
         )}
         <div className={styles.saveButtonGroup}>
-          <Button type="submit" color="success" variant="contained">
-            {isEditingExistingLine ? 'Save & close' : 'Add new'}
-          </Button>
-          {isEditingExistingLine && (
-            <Button
-              type="button"
-              color="success"
-              variant="contained"
-              onClick={handleSaveAndNextClick}
-            >
-              Save & next
+          {isEditingExistingLine ? (
+            <>
+              <Button type="submit" color="success" variant="contained">
+                Save & close
+              </Button>
+              <Button
+                type="button"
+                color="success"
+                variant="contained"
+                onClick={handleSaveAndNextClick}
+              >
+                Save & next
+              </Button>
+            </>
+          ) : (
+            <Button type="button" color="success" variant="contained" onClick={handleAddNewClick}>
+              Add new
             </Button>
           )}
         </div>
