@@ -82,6 +82,52 @@ const SettingsForm = () => {
           })
         }
       />
+      <h3 className={styles.sectionTitle}>Intro slide</h3>
+      <Input
+        placeholder="Title"
+        type="string"
+        value={settings.intro.title}
+        onChange={e =>
+          handleChangeSettings({
+            ...settings,
+            intro: { ...settings.intro, title: e.currentTarget.value },
+          })
+        }
+      />
+      <Input
+        placeholder="Subtitle"
+        type="string"
+        value={settings.intro.subtitle}
+        onChange={e =>
+          handleChangeSettings({
+            ...settings,
+            intro: { ...settings.intro, subtitle: e.currentTarget.value },
+          })
+        }
+      />
+      <h3 className={styles.sectionTitle}>Outro slide</h3>
+      <Input
+        placeholder="Title"
+        type="string"
+        value={settings.outro.title}
+        onChange={e =>
+          handleChangeSettings({
+            ...settings,
+            outro: { ...settings.outro, title: e.currentTarget.value },
+          })
+        }
+      />
+      <Input
+        placeholder="Subtitle"
+        type="string"
+        value={settings.outro.subtitle}
+        onChange={e =>
+          handleChangeSettings({
+            ...settings,
+            outro: { ...settings.outro, subtitle: e.currentTarget.value },
+          })
+        }
+      />
     </div>
   );
 };

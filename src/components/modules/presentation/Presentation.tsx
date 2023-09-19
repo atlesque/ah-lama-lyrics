@@ -5,24 +5,7 @@ import { currentLyricsLineAtom } from '../../../atoms/lyrics';
 import { settingsAtom } from '../../../atoms/settings';
 import Button from '../../shared/Button';
 import styles from './Presentation.module.scss';
-
-const INTRO_TIME = 8000;
-const OUTRO_TIME = 8000;
-
-interface TitleLine {
-  title: string;
-  subtitle?: string;
-}
-
-const INTRO_TEXT: TitleLine = {
-  title: 'Guru Yoga That Brings Swift Realisations',
-  subtitle: 'His Holiness the Great Siddha Lungdok Gyaltsen Rinpoche',
-};
-
-const OUTRO_TEXT: TitleLine = {
-  title: 'Guru Yoga That Brings Swift Realisations',
-  subtitle: 'His Holiness the Great Siddha Lungdok Gyaltsen Rinpoche',
-};
+import { SlideSettings } from '../../../types/settings';
 
 interface PresentationProps {
   onPlay: () => void;
@@ -53,10 +36,10 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
     setIsPlaying(true);
     const presentationTimerId = setTimeout(() => {
       startMainPresentation();
-    }, INTRO_TIME);
+    }, settings.intro.time);
     setPresentationTimerId(presentationTimerId);
     onPlay();
-  }, [onPlay, startMainPresentation]);
+  }, [onPlay, settings.intro.time, startMainPresentation]);
 
   const handleStopClick = useCallback(() => {
     if (!audioPlayer) {
@@ -71,15 +54,15 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
     audioPlayer.currentTime = 0;
   }, [audioPlayer, onStop, presentationTimerId]);
 
-  const titleScreen: TitleLine | undefined = useMemo(() => {
+  const titleSlide: SlideSettings | undefined = useMemo(() => {
     if (isPlayingIntro) {
-      return INTRO_TEXT;
+      return settings.intro;
     }
     if (isPlayingOutro) {
-      return OUTRO_TEXT;
+      return settings.outro;
     }
     return undefined;
-  }, [isPlayingIntro, isPlayingOutro]);
+  }, [isPlayingIntro, isPlayingOutro, settings.intro, settings.outro]);
 
   useEffect(() => {
     if (audioPlayerHasEnded) {
@@ -87,9 +70,9 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
       setTimeout(() => {
         setIsPlayingOutro(false);
         setIsPlaying(false);
-      }, OUTRO_TIME);
+      }, settings.outro.time);
     }
-  }, [audioPlayerHasEnded, isPlaying]);
+  }, [audioPlayerHasEnded, isPlaying, settings.outro.time]);
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
@@ -134,13 +117,13 @@ const Presentation = ({ onPlay, onStop }: PresentationProps) => {
               backgroundImage: `url(${currentLine?.image})`,
             }}
           >
-            {titleScreen && (
+            {titleSlide && (
               <>
-                <span className={styles.textTitle}>{titleScreen?.title}</span>
-                <span className={styles.textSubtitle}>{titleScreen?.subtitle}</span>
+                <span className={styles.textTitle}>{titleSlide?.title}</span>
+                <span className={styles.textSubtitle}>{titleSlide?.subtitle}</span>
               </>
             )}
-            {!titleScreen && !currentLine?.image && (
+            {!titleSlide && !currentLine?.image && (
               <>
                 {settings.showTibetan && (
                   <span className={styles.textTibetan}>{currentLine?.tibetan}</span>
