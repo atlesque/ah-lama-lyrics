@@ -18,6 +18,7 @@ import { settingsAtom } from '../../../atoms/settings';
 import WarningTriangleIcon from '../../../icons/WarningTriangleIcon';
 import LengthIcon from '../../../icons/LengthIcon';
 import SplitIcon from '../../../icons/SplitIcon';
+import ImageIcon from '../../../icons/ImageIcon';
 
 const MAX_SAFE_LINE_LENGTH = 80;
 const TIBETAN_EOL = ' །';
@@ -27,6 +28,7 @@ interface Warnings {
   broken: number;
   long: number;
   splitable: number;
+  images: number;
 }
 
 const LyricsLinesList = () => {
@@ -90,6 +92,7 @@ const LyricsLinesList = () => {
     let broken = 0;
     let long = 0;
     let splitable = 0;
+    let images = 0;
     lyricsLines.forEach((line, index) => {
       if (!isLineSafeLength(line)) {
         long++;
@@ -97,24 +100,40 @@ const LyricsLinesList = () => {
       if (index < lyricsLines.length - 1 && !isNextLineConsecutive(index)) {
         broken++;
       }
-      // If TIBETAN_END_OF_LINE occurs more than once in a line, it's splitable
       if (isLineSplitable(line)) {
         splitable++;
+      }
+      if (line.image) {
+        images++;
       }
     });
     return {
       broken,
       long,
       splitable,
+      images,
     };
   }, [isNextLineConsecutive, lyricsLines]);
 
   return (
     <>
       <ul className={styles.warningsList}>
-        <li>{warnings.broken} broken</li>
-        <li>{warnings.long} long</li>
-        <li>{warnings.splitable} splitable</li>
+        <li title="Broken lines">
+          <WarningTriangleIcon className={styles.timeWarningIcon} />
+          <span>{warnings.broken}</span>
+        </li>
+        <li title="Long lines">
+          <LengthIcon className={styles.lengthIcon} />
+          <span>{warnings.long}</span>
+        </li>
+        <li title="Splitable lines">
+          <SplitIcon className={styles.splitableIcon} />
+          <span>{warnings.splitable}</span>
+        </li>
+        <li title="Images">
+          <ImageIcon className={styles.imageIcon} />
+          <span>{warnings.images}</span>
+        </li>
       </ul>
       <ul className={styles.lyricsList} ref={rootRef}>
         {lyricsLines.map((line, index) => (
@@ -134,6 +153,7 @@ const LyricsLinesList = () => {
                 )}
                 {!isLineSafeLength(line) && <LengthIcon className={styles.lengthIcon} />}
                 {isLineSplitable(line) && <SplitIcon className={styles.splitableIcon} />}
+                {line.image && <ImageIcon className={styles.imageIcon} />}
               </div>
               <span className={styles.tibetan}>{line.tibetan}</span>
               <span className={styles.transliteration}>{line.transliteration}</span>
