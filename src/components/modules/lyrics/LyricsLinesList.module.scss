@@ -1,4 +1,16 @@
-.root {
+.warningsList {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing);
+
+  li {
+    background-color: var(--color-gray-light);
+    border-radius: var(--border-radius);
+    padding: 0 var(--spacing);
+  }
+}
+
+.lyricsList {
   display: flex;
   flex-direction: column;
   padding: var(--spacing-2);
@@ -53,6 +65,18 @@
 .timeWarningIcon {
   width: 11px;
   color: var(--color-warning-dark);
+}
+
+.lengthIcon {
+  width: 16px;
+  align-self: center;
+  color: var(--color-error-dark);
+}
+
+.splitableIcon {
+  width: 14px;
+  align-self: center;
+  color: var(--color-info-dark);
 }
 
 .tibetan {

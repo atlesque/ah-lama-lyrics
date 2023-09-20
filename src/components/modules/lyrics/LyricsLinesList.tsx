@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { lastSetTimeAtom } from '../../../atoms/audioPlayer';
 import {
@@ -16,6 +16,18 @@ import Button from '../../shared/Button';
 import styles from './LyricsLinesList.module.scss';
 import { settingsAtom } from '../../../atoms/settings';
 import WarningTriangleIcon from '../../../icons/WarningTriangleIcon';
+import LengthIcon from '../../../icons/LengthIcon';
+import SplitIcon from '../../../icons/SplitIcon';
+
+const MAX_SAFE_LINE_LENGTH = 80;
+const TIBETAN_EOL = ' །';
+const TIBETAN_EOL_ALT = '།།';
+
+interface Warnings {
+  broken: number;
+  long: number;
+  splitable: number;
+}
 
 const LyricsLinesList = () => {
   const [lyricsLines] = useAtom(lyricsLinesAtom);
@@ -51,42 +63,95 @@ const LyricsLinesList = () => {
     }
   }, [currentLineIndex, settings.autoFollowLyricsList]);
 
-  const isNextLineConsecutive = (lineIndex: number) => {
-    const currentLine = lyricsLines[lineIndex];
-    const nextLine = lyricsLines[lineIndex + 1];
-    return currentLine && nextLine && currentLine.endTime === nextLine.startTime;
+  const isNextLineConsecutive = useCallback(
+    (lineIndex: number) => {
+      const currentLine = lyricsLines[lineIndex];
+      const nextLine = lyricsLines[lineIndex + 1];
+      return currentLine && nextLine && currentLine.endTime === nextLine.startTime;
+    },
+    [lyricsLines]
+  );
+
+  const isLineSafeLength = ({ tibetan = '', english = '', transliteration = '' }: LyricsLine) => {
+    return (
+      tibetan.length <= MAX_SAFE_LINE_LENGTH &&
+      english.length <= MAX_SAFE_LINE_LENGTH &&
+      transliteration.length <= MAX_SAFE_LINE_LENGTH
+    );
   };
 
+  const isLineSplitable = ({ tibetan = '' }: LyricsLine) => {
+    const eolCount = (tibetan.match(new RegExp(TIBETAN_EOL, 'g')) || []).length;
+    const eolAltCount = (tibetan.match(new RegExp(TIBETAN_EOL_ALT, 'g')) || []).length;
+    return eolCount + eolAltCount > 1;
+  };
+
+  const warnings: Warnings = useMemo(() => {
+    let broken = 0;
+    let long = 0;
+    let splitable = 0;
+    lyricsLines.forEach((line, index) => {
+      if (!isLineSafeLength(line)) {
+        long++;
+      }
+      if (index < lyricsLines.length - 1 && !isNextLineConsecutive(index)) {
+        broken++;
+      }
+      // If TIBETAN_END_OF_LINE occurs more than once in a line, it's splitable
+      if (isLineSplitable(line)) {
+        splitable++;
+      }
+    });
+    return {
+      broken,
+      long,
+      splitable,
+    };
+  }, [isNextLineConsecutive, lyricsLines]);
+
   return (
-    <ul className={styles.root} ref={rootRef}>
-      {lyricsLines.map((line, index) => (
-        <li key={`lyricsLine-${index}`} className={styles.lyricsLine}>
-          <button
-            className={clsx(styles.lyricsLineText, {
-              [styles.isActive]: index === activeLyricsLineIndex,
-            })}
-            onClick={() => handleLineClick(line)}
-          >
-            <div className={styles.timecodeRow}>
-              <span className={styles.lyricsTimecode}>
-                {getSecondsAsTimecode(line.startTime)} - {getSecondsAsTimecode(line.endTime)}
-              </span>
-              {index < lyricsLines.length - 1 && !isNextLineConsecutive(index) && (
-                <WarningTriangleIcon className={styles.timeWarningIcon} />
-              )}
+    <>
+      <ul className={styles.warningsList}>
+        <li>{warnings.broken} broken</li>
+        <li>{warnings.long} long</li>
+        <li>{warnings.splitable} splitable</li>
+      </ul>
+      <ul className={styles.lyricsList} ref={rootRef}>
+        {lyricsLines.map((line, index) => (
+          <li key={`lyricsLine-${index}`} className={styles.lyricsLine}>
+            <button
+              className={clsx(styles.lyricsLineText, {
+                [styles.isActive]: index === activeLyricsLineIndex,
+              })}
+              onClick={() => handleLineClick(line)}
+            >
+              <div className={styles.timecodeRow}>
+                <span className={styles.lyricsTimecode}>
+                  {getSecondsAsTimecode(line.startTime)} - {getSecondsAsTimecode(line.endTime)}
+                </span>
+                {index < lyricsLines.length - 1 && !isNextLineConsecutive(index) && (
+                  <WarningTriangleIcon className={styles.timeWarningIcon} />
+                )}
+                {!isLineSafeLength(line) && <LengthIcon className={styles.lengthIcon} />}
+                {isLineSplitable(line) && <SplitIcon className={styles.splitableIcon} />}
+              </div>
+              <span className={styles.tibetan}>{line.tibetan}</span>
+              <span className={styles.transliteration}>{line.transliteration}</span>
+              <span className={styles.english}>{line.english}</span>
+            </button>
+            <div>
+              <Button className={styles.actionButton} onClick={() => handleEditClick(index)}>
+                {index === activeLyricsLineIndex ? (
+                  <CloseIcon width={16} />
+                ) : (
+                  <EditIcon width={16} />
+                )}
+              </Button>
             </div>
-            <span className={styles.tibetan}>{line.tibetan}</span>
-            <span className={styles.transliteration}>{line.transliteration}</span>
-            <span className={styles.english}>{line.english}</span>
-          </button>
-          <div>
-            <Button className={styles.actionButton} onClick={() => handleEditClick(index)}>
-              {index === activeLyricsLineIndex ? <CloseIcon width={16} /> : <EditIcon width={16} />}
-            </Button>
-          </div>
-        </li>
-      ))}
-    </ul>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

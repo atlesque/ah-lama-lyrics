@@ -98,7 +98,7 @@ const LyricsForm = () => {
   }, [activeLyricsLine, resetForm, setValue]);
 
   const parseMixedInputLine = (inputLine: LyricsLine): LyricsLine => {
-    if (inputLine?.mixed === undefined) {
+    if (inputLine?.mixed === undefined || inputLine?.mixed.length <= 0) {
       return inputLine;
     }
     const mixedInputLine = inputLine.mixed;
